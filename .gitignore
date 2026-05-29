@@ -1,0 +1,33 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ---- Node / Frontend ----
+node_modules/
+dist/
+.vite/
+*.local
+
+# ---- Env / secrets (NEVER commit) ----
+.env
+*.env
+!.env.example
+
+# ---- Mosquitto runtime ----
+infra/mosquitto/passwd
+infra/mosquitto/data/
+infra/mosquitto/log/
+
+# ---- Editors / OS ----
+.DS_Store
+Thumbs.db
+.idea/
+*.swp

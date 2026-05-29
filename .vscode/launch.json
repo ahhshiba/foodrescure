@@ -1,0 +1,37 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "API: attach to container (debugpy)",
+      "type": "debugpy",
+      "request": "attach",
+      "connect": { "host": "localhost", "port": 5678 },
+      "pathMappings": [
+        {
+          "localRoot": "${workspaceFolder}/server",
+          "remoteRoot": "/app"
+        }
+      ],
+      "justMyCode": false
+    },
+    {
+      "name": "sim_edge.py (host)",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/server/scripts/sim_edge.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/server",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "name": "pytest (server)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "args": ["-v"],
+      "cwd": "${workspaceFolder}/server",
+      "console": "integratedTerminal",
+      "justMyCode": false
+    }
+  ]
+}
