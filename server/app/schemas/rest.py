@@ -49,6 +49,9 @@ class MeResponse(BaseModel):
     username: str
     level: int
     xp: int
+    protein: float
+    carbs: float
+    lipids: float
 
 
 class InventoryResponse(BaseModel):
@@ -83,6 +86,8 @@ class NodeOut(BaseModel):
     last_heartbeat: datetime | None = None
     lat: float | None = None
     lng: float | None = None
+    entropy: float = 0.0
+    health_avg: float = 0.0
 
 
 class NodeDetail(NodeOut):

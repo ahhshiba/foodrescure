@@ -13,6 +13,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
+from app.api import account, auth, bounties, feedback, nodes, stats
 from app.bridge.mqtt_bridge import MqttBridge
 from app.config import settings
 from app.scheduler import GlitchScheduler
@@ -56,12 +57,15 @@ app = FastAPI(
 
 app.include_router(ws_router)
 
+_API = "/api/v1"
+app.include_router(auth.router, prefix=_API)
+app.include_router(account.router, prefix=_API)
+app.include_router(nodes.router, prefix=_API)
+app.include_router(bounties.router, prefix=_API)
+app.include_router(feedback.router, prefix=_API)
+app.include_router(stats.router, prefix=_API)
+
 
 @app.get("/health", tags=["meta"])
 async def health() -> dict[str, str]:
     return {"status": "ok", "service": "glitch-salvage-api"}
-
-
-# REST routers are registered in M4:
-# from app.api import auth, cards, nodes, inventory, bounties, feedback, stats
-# app.include_router(auth.router, prefix="/api/v1")
