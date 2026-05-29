@@ -57,6 +57,7 @@ export function useGameSocket(): void {
           qc.invalidateQueries({ queryKey: ['me'] });
           qc.invalidateQueries({ queryKey: ['inventory'] });
           qc.invalidateQueries({ queryKey: ['nodes'] });
+          qc.invalidateQueries({ queryKey: ['my_reservations'] });
           break;
         }
         case 'entropy_update': {

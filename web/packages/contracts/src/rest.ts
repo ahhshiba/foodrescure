@@ -56,6 +56,8 @@ export interface FoodOut {
   health: number;
   spoiled: boolean;
   claimed: boolean;
+  reserved: boolean;
+  reserved_by: number | null;
 }
 
 export interface NodeOut {
@@ -66,6 +68,7 @@ export interface NodeOut {
   last_heartbeat: string | null;
   lat: number | null;
   lng: number | null;
+  tailscale_ip: string | null;
   entropy: number;
   health_avg: number;
 }

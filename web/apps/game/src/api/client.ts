@@ -10,7 +10,9 @@ interface ReqOpts {
 
 export async function api<T>(path: string, opts: ReqOpts = {}): Promise<T> {
   const { token, method = 'GET', body } = opts;
-  const headers: Record<string, string> = {};
+  const headers: Record<string, string> = {
+    'ngrok-skip-browser-warning': 'true',
+  };
   if (body !== undefined) headers['Content-Type'] = 'application/json';
   if (token) headers.Authorization = `Bearer ${token}`;
 

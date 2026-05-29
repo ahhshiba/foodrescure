@@ -86,6 +86,15 @@ services:
       start_period: 10s
     restart: unless-stopped
 
+  ngrok:
+    image: ngrok/ngrok:latest
+    command: http --url=stunt-custodian-seducing.ngrok-free.dev nginx:80
+    environment:
+      - NGROK_AUTHTOKEN=3EOq3xyirMJEdTlM6kkJKhmrd1r_7Ai1DfLAxsHbajWzbEUW7
+    restart: unless-stopped
+    depends_on:
+      - nginx
+
 volumes:
   pg_data:
   mqtt_data:

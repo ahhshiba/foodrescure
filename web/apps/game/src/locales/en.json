@@ -70,5 +70,35 @@
     "dismiss": "dismiss"
   },
   "lang": { "toggle": "中文" },
-  "dropoff": { "button": "Drop-off" }
+  "dropoff": { "button": "Drop-off" },
+  "manual": {
+    "button": "SYSTEM LOG: OPERATOR GUIDE",
+    "title": "[ GLITCH SALVAGE ] OPERATOR BEGINNER'S GUIDE",
+    "classification": "CLASSIFIED DOCUMENT // LEVEL 1 CLEARANCE",
+    "intro_title": ">>> SYSTEM INIT...",
+    "intro_desc": "Welcome to the GLITCH SALVAGE network. This is a decentralized grid monitoring urban food waste through smart sensor nodes. As an Operator, your mission is to locate food resources nearing 'High Entropy' (spoilage) via live data streams and dispatch yourself to rescue them.",
+    "step1_title": "01 // CORE LOOP: Map Surveillance",
+    "step1_desc1": "Use the Dark Matter Map in the center of your terminal to monitor all smart nodes in real-time.",
+    "step1_li1": "Green Nodes (Stable): The node is operating normally, food entropy is low.",
+    "step1_li2": "Amber Pulses (High Entropy Alert): Food inside is nearing spoilage. Click the node to open the Context Panel and view live hardware sonar data.",
+    "step1_hint": ">> HINT: Prioritize high-entropy nodes for bonus XP rewards.",
+    "step2_title": "02 // HARDWARE HANDSHAKE: Reserving & Unlocking",
+    "step2_desc1": "Once a target is acquired, click [RESERVE] in the Context Panel.",
+    "step2_li1": "Digital Dispatch: Your RFID clearance code is instantly sent to the physical node (Raspberry Pi) via encrypted tunnels.",
+    "step2_li2": "Physical Verification: Travel to the physical locker and scan your registered RFID card.",
+    "step2_li3": "Unlock & Extract: If the UID matches, the locker opens. Once the sonar detects the food is removed, the door closes and credits are transferred to your terminal.",
+    "step3_title": "03 // NANOS UPGRADE SYSTEM",
+    "step3_desc1": "Every successful rescue yields three bio-resources: PROTEIN, CARBS, and LIPIDS.",
+    "step3_desc2": "Spend these resources to cultivate and upgrade your virtual Nanos (Pikmin-esque workers) in the bottom right panel:",
+    "nano_crab_title": "CRAB UNIT",
+    "nano_crab_food": "DIET: CARBS",
+    "nano_crab_desc": "Specialized in payload capacity. Upgrading increases your maximum simultaneous reservations.",
+    "nano_spider_title": "SPIDER UNIT",
+    "nano_spider_food": "DIET: PROTEIN",
+    "nano_spider_desc": "Specialized in network interception. Upgrading reduces hardware handshake latency.",
+    "nano_jelly_title": "JELLY UNIT",
+    "nano_jelly_food": "DIET: LIPIDS",
+    "nano_jelly_desc": "Specialized in entropy absorption. Grants up to 50% XP bonus when rescuing high-entropy food.",
+    "start_btn": "[ ACCEPT DIRECTIVES / INITIALIZE ]"
+  }
 }

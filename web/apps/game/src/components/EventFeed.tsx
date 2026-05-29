@@ -16,11 +16,11 @@ export function EventFeed() {
   const { t } = useTranslation();
   const feed = useGame((s) => s.feed);
   return (
-    <div className="panel flex h-full flex-col rounded-lg p-3">
+    <div className="panel flex flex-col max-h-96 rounded-lg p-3">
       <h2 className="mb-2 text-xs font-bold uppercase tracking-widest text-neon-green">
         {t('feed.title')}
       </h2>
-      <div className="flex-1 space-y-1 overflow-y-auto pr-1 text-[11px]">
+      <div className="space-y-1 overflow-y-auto pr-1 text-[11px]">
         {feed.length === 0 && <div className="text-neon-cyan/40">{t('feed.awaiting')}</div>}
         {feed.map((item) => (
           <div key={item.id} className={KIND_COLOR[item.kind]}>

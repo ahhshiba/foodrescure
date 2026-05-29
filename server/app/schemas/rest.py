@@ -36,6 +36,10 @@ class ClaimCardRequest(BaseModel):
     claim_code: str
 
 
+class BindCardRequest(BaseModel):
+    rfid: str
+
+
 # ---- Me / inventory ----
 class NanosOut(BaseModel):
     model_config = ORM
@@ -76,6 +80,8 @@ class FoodOut(BaseModel):
     health: float
     spoiled: bool
     claimed: bool
+    reserved: bool = False
+    reserved_by: int | None = None
 
 
 class NodeOut(BaseModel):
@@ -87,6 +93,7 @@ class NodeOut(BaseModel):
     last_heartbeat: datetime | None = None
     lat: float | None = None
     lng: float | None = None
+    tailscale_ip: str | None = None
     entropy: float = 0.0
     health_avg: float = 0.0
 

@@ -13,9 +13,14 @@ export function BountyPanel() {
   const claim = useClaimBounty();
 
   return (
-    <div className="panel flex h-full flex-col rounded-lg p-4">
-      <h2 className="mb-3 text-sm font-bold text-neon-green">{t('bounty.title')}</h2>
-      <div className="flex-1 space-y-3 overflow-y-auto pr-1">
+    <div className="panel flex flex-col rounded-none p-0 border border-neon-cyan/40 shadow-[0_0_15px_rgba(0,255,255,0.05)] relative flex-1">
+      <div className="bg-neon-cyan/10 border-b border-neon-cyan/40 p-2">
+        <h2 className="text-sm font-bold text-neon-green tracking-widest uppercase flex items-center gap-2">
+          <div className="w-1.5 h-4 bg-neon-green"></div>
+          {t('bounty.title')}
+        </h2>
+      </div>
+      <div className="space-y-3 p-3 flex-1 overflow-y-auto custom-scrollbar">
         {data?.map((b) => (
           <div key={b.id} className="rounded border border-neon-green/20 bg-black/40 p-3">
             <div className="mb-1 text-xs text-neon-cyan">{String(b.spec_json?.description ?? 'Directive')}</div>

@@ -49,6 +49,7 @@ NODES = [
         "location": "Bldg A 1F",
         "lat": 25.0173,
         "lng": 121.5398,
+        "tailscale_ip": "127.0.0.1",
     },
     {
         "id": "node-02",
@@ -56,6 +57,7 @@ NODES = [
         "location": "Bldg B 2F",
         "lat": 25.0181,
         "lng": 121.5405,
+        "tailscale_ip": "127.0.0.1",
     },
     {
         "id": "node-03",
@@ -63,6 +65,7 @@ NODES = [
         "location": "Bldg C 1F",
         "lat": 25.0165,
         "lng": 121.5412,
+        "tailscale_ip": "127.0.0.1",
     },
     {
         "id": "node-04",
@@ -70,6 +73,7 @@ NODES = [
         "location": "Gym 1F",
         "lat": 25.0158,
         "lng": 121.5389,
+        "tailscale_ip": "127.0.0.1",
     },
     {
         "id": "node-05",
@@ -77,6 +81,7 @@ NODES = [
         "location": "Dorm 3 G/F",
         "lat": 25.0190,
         "lng": 121.5420,
+        "tailscale_ip": "127.0.0.1",
     },
     {
         "id": "node-06",
@@ -84,6 +89,7 @@ NODES = [
         "location": "Bldg D 2F",
         "lat": 25.0149,
         "lng": 121.5401,
+        "tailscale_ip": "127.0.0.1",
     },
 ]
 

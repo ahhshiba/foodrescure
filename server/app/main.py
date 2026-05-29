@@ -11,9 +11,10 @@ import logging
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, APIRouter, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.api import account, auth, bounties, feedback, nodes, salvage, stats
+from app.api import account, auth, bounties, feedback, nodes, salvage, stats, tailscale
 from app.bridge.mqtt_bridge import MqttBridge
 from app.config import settings
 from app.scheduler import GlitchScheduler
@@ -56,6 +57,14 @@ app = FastAPI(
 )
 
 app.include_router(ws_router)
+app.include_router(tailscale.router)
+
+# Backwards compatibility for Pi which hardcodes /nodes/{node_id}/pickup_result
+pi_router = APIRouter(tags=["pi_compat"])
+@pi_router.post("/nodes/{node_id}/pickup_result")
+async def pickup_result_compat(node_id: str, payload: nodes.PiResult, session: AsyncSession = Depends(account.get_session)):
+    return await nodes.pickup_result(node_id, payload, session)
+app.include_router(pi_router)
 
 _API = "/api/v1"
 app.include_router(auth.router, prefix=_API)

@@ -9,7 +9,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_current_user
-from app.db.models import Card, NanosInventory, NanosType, User
+from app.db.models import Card, Food, NanosInventory, NanosType, User
 from app.db.session import get_session
 from app.engine import economy
 from app.schemas.rest import (
@@ -27,6 +27,25 @@ router = APIRouter(tags=["account"])
 async def me(user: User = Depends(get_current_user)) -> MeResponse:
     return MeResponse.model_validate(user)
 
+from app.schemas.rest import FoodOut
+
+@router.get("/me/reservations")
+async def my_reservations(
+    user: User = Depends(get_current_user),
+    session: AsyncSession = Depends(get_session),
+):
+    """取得當前使用者所有「預約中」且尚未領取的食物"""
+    foods = (
+        await session.execute(
+            select(Food).where(Food.reserved_by == user.id, Food.claimed.is_(False))
+        )
+    ).scalars().all()
+    
+    # We also need to add node_id to the response, wait!
+    # Does FoodOut have node_id? Let's check rest.py, FoodOut does NOT have node_id!
+    # I should return dicts or extend FoodOut.
+    return [{"node_id": f.node_id, **FoodOut.model_validate(f).model_dump()} for f in foods]
+
 
 @router.post("/cards/claim", response_model=MeResponse)
 async def claim_card(
@@ -41,6 +60,30 @@ async def claim_card(
         raise HTTPException(status_code=409, detail="Card already claimed by another account")
     card.user_id = user.id
     card.claimed_at = datetime.now(UTC)
+    await session.commit()
+    return MeResponse.model_validate(user)
+
+
+from app.schemas.rest import BindCardRequest
+
+@router.post("/cards/bind", response_model=MeResponse)
+async def bind_card(
+    body: BindCardRequest,
+    user: User = Depends(get_current_user),
+    session: AsyncSession = Depends(get_session),
+) -> MeResponse:
+    """直接將指定的 RFID UID 綁定到當前使用者帳號"""
+    card = (await session.execute(select(Card).where(Card.rfid == body.rfid))).scalar_one_or_none()
+    
+    if card is None:
+        card = Card(rfid=body.rfid, user_id=user.id, claim_code="bound_via_web")
+        session.add(card)
+    else:
+        if card.user_id is not None and card.user_id != user.id:
+            raise HTTPException(status_code=409, detail="該 UID 已經被其他帳號綁定")
+        card.user_id = user.id
+        card.claimed_at = datetime.now(UTC)
+        
     await session.commit()
     return MeResponse.model_validate(user)
 

@@ -32,6 +32,7 @@ NODES = [
         "location": "Bldg A 1F",
         "lat": 25.0173,
         "lng": 121.5398,
+        "tailscale_ip": "host.docker.internal",
     },
     {
         "id": "node-02",
@@ -39,6 +40,7 @@ NODES = [
         "location": "Bldg B 2F",
         "lat": 25.0181,
         "lng": 121.5405,
+        "tailscale_ip": "host.docker.internal",
     },
 ]
 
@@ -101,6 +103,9 @@ async def dev_seed() -> tuple[int, str]:
             existing = await session.get(Node, nd["id"])
             if existing is None:
                 session.add(Node(status="online", **nd))
+            else:
+                existing.tailscale_ip = nd.get("tailscale_ip")
+                existing.status = "online"
 
         # Foods (only seed if this node has none yet, to stay idempotent)
         existing_foods = (await session.execute(select(Food.node_id))).scalars().all()

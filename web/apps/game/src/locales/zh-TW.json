@@ -70,5 +70,35 @@
     "dismiss": "略過"
   },
   "lang": { "toggle": "EN" },
-  "dropoff": { "button": "投放補貨" }
+  "dropoff": { "button": "投放補貨" },
+  "manual": {
+    "button": "系統日誌: 終端操作指南",
+    "title": "[ GLITCH SALVAGE ] 新手指揮官特務救援指南",
+    "classification": "CLASSIFIED DOCUMENT // LEVEL 1 ACCESS ONLY",
+    "intro_title": ">>> 系統初始化...",
+    "intro_desc": "歡迎來到 GLITCH SALVAGE 網路。這是一個透過分散式感測器監控城市食物浪費的去中心化網路。身為指揮官，您的目標是透過即時資料流，找出處於「高熵值 (High Entropy / 腐敗邊緣)」的食物資源，並指揮實體部隊前往救援。",
+    "step1_title": "01 // 核心玩法：Map Surveillance (地圖監控)",
+    "step1_desc1": "透過終端機中央的 Dark Matter Map，您能實時監控所有智慧節點 (Nodes)。",
+    "step1_li1": "綠色節點 (穩定狀態)：目前機台運作正常，食物熵值極低。",
+    "step1_li2": "琥珀色閃爍 (高熵警報)：機台內有食物即將過期或損壞。點擊節點可開啟 Context 資訊面板，查看現場超音波感測器回傳的真實容量數據與機台照片。",
+    "step1_hint": ">> 新手提示：優先處理高熵值的節點，以獲得額外的 XP 經驗值獎勵！",
+    "step2_title": "02 // 硬體交握：Hardware Handshake",
+    "step2_desc1": "找到目標後，請在右側 Context 面板點擊 [RESERVE] (線上預約)。",
+    "step2_li1": "數位派發 (Digital Dispatch)：預約成功後，系統將透過加密的 Tailscale 隧道，將您的 RFID 授權碼發送至該實體節點 (Raspberry Pi)。",
+    "step2_li2": "物理驗證 (Physical Verification)：您必須帶著實體 RFID 卡片前往機台。當卡片貼近感測器時，機台將在毫秒內進行比對。",
+    "step2_li3": "解鎖與數據回傳：若卡片 UID 相符，機櫃門將開啟。當超音波感測器偵測到物資被取走，機台會自動關門，並回傳 resource_credited 訊號至您的終端機，完成救援任務。",
+    "step3_title": "03 // 奈米機升級系統 (Nanos Upgrade)",
+    "step3_desc1": "每次成功的救援都會根據食物種類為您提煉出三種生化資源：蛋白質 (PROTEIN)、碳水 (CARBS) 與脂質 (LIPIDS)。",
+    "step3_desc2": "您可以使用這些資源來培養並升級終端機右下角的「Nanos (皮可敏型奈米機)」。不同型態的 Nanos 各有專長：",
+    "nano_crab_title": "CRAB 蟹型機",
+    "nano_crab_food": "主食：碳水 (CARBS)",
+    "nano_crab_desc": "特化於【負重與搬運】。升級後可增加您同時預約的最大數量上限。",
+    "nano_spider_title": "SPIDER 蛛型機",
+    "nano_spider_food": "主食：蛋白質 (PROTEIN)",
+    "nano_spider_desc": "特化於【網路攔截】。升級後可縮短硬體交握的延遲時間，並解鎖進階感測器數據。",
+    "nano_jelly_title": "JELLY 膠體型",
+    "nano_jelly_food": "主食：脂質 (LIPIDS)",
+    "nano_jelly_desc": "特化於【熵值吸收】。升級後在救援高熵食物時，可獲得額外最高 50% 的 XP 加成。",
+    "start_btn": "[ 接受任務指令 / INITIALIZE ]"
+  }
 }

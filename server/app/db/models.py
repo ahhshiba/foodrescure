@@ -80,6 +80,7 @@ class Node(Base):
     last_heartbeat: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     lat: Mapped[float | None] = mapped_column(Float, nullable=True)
     lng: Mapped[float | None] = mapped_column(Float, nullable=True)
+    tailscale_ip: Mapped[str | None] = mapped_column(String(45), nullable=True)
 
     foods: Mapped[list[Food]] = relationship(back_populates="node")
 
@@ -117,6 +118,9 @@ class Food(Base):
     pkg_factor: Mapped[float] = mapped_column(Float, default=1.0, server_default="1")  # F_pkg
     claimed: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false")
     claimed_by: Mapped[int | None] = mapped_column(ForeignKey("users.id"), nullable=True)
+    reserved: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false")
+    reserved_by: Mapped[int | None] = mapped_column(ForeignKey("users.id"), nullable=True)
+    reserved_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
     node: Mapped[Node] = relationship(back_populates="foods")
 

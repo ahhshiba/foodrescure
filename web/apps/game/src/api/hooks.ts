@@ -19,6 +19,45 @@ export function useMe() {
   });
 }
 
+export function useMyReservations() {
+  const token = useAuth((s) => s.token);
+  return useQuery({
+    queryKey: ['my_reservations'],
+    queryFn: () => api<any[]>('/me/reservations', { token }),
+    enabled: !!token,
+    refetchInterval: 5000,
+  });
+}
+
+export function useCancelReservation() {
+  const token = useAuth((s) => s.token);
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (nodeId: string) =>
+      api<{ status: string; message: string }>(`/nodes/${nodeId}/cancel_reservation`, {
+        method: 'POST',
+        token,
+      }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['my_reservations'] });
+      qc.invalidateQueries({ queryKey: ['node'] });
+      qc.invalidateQueries({ queryKey: ['me'] });
+    },
+  });
+}
+
+export function useBindCard() {
+  const token = useAuth((s) => s.token);
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (rfid: string) =>
+      api<MeResponse>('/cards/bind', { method: 'POST', token, body: { rfid } }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['me'] });
+    },
+  });
+}
+
 export function useInventory() {
   const token = useAuth((s) => s.token);
   return useQuery({
