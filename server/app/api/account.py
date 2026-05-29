@@ -94,10 +94,11 @@ async def upgrade_nanos(
 
     balances = {"protein": user.protein, "carbs": user.carbs, "lipids": user.lipids}
     for material, amount in cost.items():
-        if balances.get(material, 0.0) < amount:
+        have = balances.get(material, 0.0)
+        if have < amount:
             raise HTTPException(
                 status_code=409,
-                detail=f"Insufficient {material}: need {amount}, have {balances.get(material, 0.0)}",
+                detail=f"Insufficient {material}: need {amount}, have {have}",
             )
 
     user.protein -= cost.get("protein", 0.0)

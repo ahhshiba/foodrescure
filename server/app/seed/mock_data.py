@@ -27,13 +27,12 @@ from app.db.models import (
     EntropySnapshot,
     Feedback,
     Food,
-    FoodClass,
     Node,
     Transaction,
     User,
 )
 from app.db.session import AsyncSessionLocal
-from app.engine import economy
+from app.engine import decay, economy
 from app.security import hash_password
 
 log = logging.getLogger("glitch.mock")
@@ -44,12 +43,48 @@ N_DAYS = 30
 MOCK_USER_PREFIX = "agent_"
 
 NODES = [
-    {"id": "node-01", "name": "Cafeteria North", "location": "Bldg A 1F", "lat": 25.0173, "lng": 121.5398},
-    {"id": "node-02", "name": "Library Kiosk", "location": "Bldg B 2F", "lat": 25.0181, "lng": 121.5405},
-    {"id": "node-03", "name": "Engineering Hub", "location": "Bldg C 1F", "lat": 25.0165, "lng": 121.5412},
-    {"id": "node-04", "name": "Sports Complex", "location": "Gym 1F", "lat": 25.0158, "lng": 121.5389},
-    {"id": "node-05", "name": "Dorm East", "location": "Dorm 3 G/F", "lat": 25.0190, "lng": 121.5420},
-    {"id": "node-06", "name": "Med School", "location": "Bldg D 2F", "lat": 25.0149, "lng": 121.5401},
+    {
+        "id": "node-01",
+        "name": "Cafeteria North",
+        "location": "Bldg A 1F",
+        "lat": 25.0173,
+        "lng": 121.5398,
+    },
+    {
+        "id": "node-02",
+        "name": "Library Kiosk",
+        "location": "Bldg B 2F",
+        "lat": 25.0181,
+        "lng": 121.5405,
+    },
+    {
+        "id": "node-03",
+        "name": "Engineering Hub",
+        "location": "Bldg C 1F",
+        "lat": 25.0165,
+        "lng": 121.5412,
+    },
+    {
+        "id": "node-04",
+        "name": "Sports Complex",
+        "location": "Gym 1F",
+        "lat": 25.0158,
+        "lng": 121.5389,
+    },
+    {
+        "id": "node-05",
+        "name": "Dorm East",
+        "location": "Dorm 3 G/F",
+        "lat": 25.0190,
+        "lng": 121.5420,
+    },
+    {
+        "id": "node-06",
+        "name": "Med School",
+        "location": "Bldg D 2F",
+        "lat": 25.0149,
+        "lng": 121.5401,
+    },
 ]
 
 # Relative busyness per node (uneven load).
@@ -89,7 +124,9 @@ async def generate(reset: bool) -> None:
 
         existing = (
             await session.execute(
-                select(func.count()).select_from(User).where(User.username.like(f"{MOCK_USER_PREFIX}%"))
+                select(func.count())
+                .select_from(User)
+                .where(User.username.like(f"{MOCK_USER_PREFIX}%"))
             )
         ).scalar_one()
         if existing and not reset:
@@ -109,6 +146,7 @@ async def generate(reset: bool) -> None:
         await session.flush()
 
         nutrition = await economy.load_nutrition_map(session)
+        rates = await decay.load_decay_rates(session)
         cfg = await economy.load_config(session)
         classes = list(nutrition.keys())
         if not classes:
@@ -208,20 +246,20 @@ async def generate(reset: bool) -> None:
             u.protein = round(t["protein"], 1)
             u.carbs = round(t["carbs"], 1)
             u.lipids = round(t["lipids"], 1)
-            u.xp = t["xp"]
+            u.xp = int(t["xp"])
             u.level = economy.level_for_xp(t["xp"], xp_base, xp_growth)
 
         # ---- current unclaimed inventory (placed_at in the past => varied health) ----
-        for node in NODES:
+        for nd in NODES:
             for _ in range(rng.randint(4, 9)):
                 cls = rng.choice(classes)
                 age_h = rng.uniform(0.5, 26)
                 placed = now - timedelta(hours=age_h)
-                r_base = (await session.get(FoodClass, cls)).base_decay_rate
+                r_base = rates.get(cls, 1.0)
                 health = max(0.0, round(100 - r_base * 1.05 * age_h, 1))
                 session.add(
                     Food(
-                        node_id=node["id"],
+                        node_id=nd["id"],
                         food_class=cls,
                         placed_at=placed,
                         health=health,
