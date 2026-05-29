@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useGameSocket } from '../hooks/useGameSocket';
 import { useGame } from '../store/game';
 import { BountyPanel } from './BountyPanel';
+import { DropOffButton } from './DropOffButton';
 import { EventFeed } from './EventFeed';
 import { Hud } from './Hud';
 import { MapView } from './MapView';
@@ -37,6 +38,7 @@ export function GameShell() {
       </main>
       <UnlockOverlay />
       <PurityPrompt />
+      <DropOffButton />
     </div>
   );
 }

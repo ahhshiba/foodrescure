@@ -69,5 +69,6 @@
     "desc": "為你最近的救援評定新鮮度。你的掃描會訓練車隊模型。",
     "dismiss": "略過"
   },
-  "lang": { "toggle": "EN" }
+  "lang": { "toggle": "EN" },
+  "dropoff": { "button": "投放補貨" }
 }

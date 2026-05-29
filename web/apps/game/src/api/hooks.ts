@@ -3,6 +3,7 @@ import type {
   InventoryResponse,
   MeResponse,
   NodeOut,
+  SalvageResponse,
   UpgradeResponse,
 } from '@glitch/contracts';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -67,6 +68,24 @@ export function useClaimBounty() {
       api<BountyOut>(`/bounties/${bountyId}/claim`, { method: 'POST', token }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['bounties'] });
+      qc.invalidateQueries({ queryKey: ['me'] });
+      qc.invalidateQueries({ queryKey: ['inventory'] });
+    },
+  });
+}
+
+export function useSalvage() {
+  const token = useAuth((s) => s.token);
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (nodeId: string) =>
+      api<SalvageResponse>(`/nodes/${nodeId}/salvage`, {
+        method: 'POST',
+        token,
+        body: { count: 1 },
+      }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['nodes'] });
       qc.invalidateQueries({ queryKey: ['me'] });
       qc.invalidateQueries({ queryKey: ['inventory'] });
     },

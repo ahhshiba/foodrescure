@@ -69,5 +69,6 @@
     "desc": "Rate the freshness of your last salvage. Your scan trains the fleet model.",
     "dismiss": "dismiss"
   },
-  "lang": { "toggle": "中文" }
+  "lang": { "toggle": "中文" },
+  "dropoff": { "button": "Drop-off" }
 }
