@@ -23,13 +23,11 @@ from datetime import UTC, datetime
 import aiomqtt
 from pydantic import ValidationError
 from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import settings
-from app.db.models import Card, Food, Node, Transaction, User
+from app.db.models import Card, Node, Transaction, User
 from app.db.session import AsyncSessionLocal
-from app.engine import bounties, economy, entropy
-from app.engine.bounties import RescueEvent
+from app.engine import economy, salvage
 from app.schemas.mqtt import (
     SUB_AUTH_REQUEST,
     SUB_HEARTBEAT,
@@ -39,18 +37,10 @@ from app.schemas.mqtt import (
     Heartbeat,
     LastWill,
     LockCommand,
-    StatusItem,
     StatusReport,
     topic_lock_command,
 )
-from app.schemas.ws import (
-    BountyCompleted,
-    EntropyUpdate,
-    NodeStatusUpdate,
-    ResourceCredited,
-    ResourceGains,
-    UnlockSuccess,
-)
+from app.schemas.ws import NodeStatusUpdate, UnlockSuccess
 from app.ws.events import envelope
 from app.ws.manager import manager
 
@@ -201,6 +191,7 @@ class MqttBridge:
         log.info("UNLOCK node=%s user=%s txn=%s", msg.node_id, user_id, txn_id)
 
     async def _on_status(self, msg: StatusReport) -> None:
+        # Settlement is shared with virtual salvage via the salvage engine.
         async with AsyncSessionLocal() as session:
             txn = (
                 await session.execute(select(Transaction).where(Transaction.txn_id == msg.txn_id))
@@ -210,99 +201,13 @@ class MqttBridge:
                     "Status for unknown txn_id=%s node=%s, skipping", msg.txn_id, msg.node_id
                 )
                 return
-
-            nutrition = await economy.load_nutrition_map(session)
-            cfg = await economy.load_config(session)
-            result = economy.deconstruct(msg.items, nutrition, cfg)
-            if result.unknown_classes:
-                log.warning("Unknown food classes from edge: %s", result.unknown_classes)
-
-            txn.items_json = [it.model_dump(by_alias=True) for it in msg.items]
-            txn.gains_json = result.gains
-            txn.xp_awarded = result.xp
-
-            claimed, spoiled = await self._mark_foods_claimed(
-                session, msg.node_id, msg.items, txn.user_id
-            )
-
             user = await session.get(User, txn.user_id)
-            if user is not None:
-                user.protein += result.gains["protein"]
-                user.carbs += result.gains["carbs"]
-                user.lipids += result.gains["lipids"]
-                user.xp += result.xp
-                user.level = economy.level_for_xp(
-                    user.xp,
-                    float(cfg.get("level_xp_base", 100)),
-                    float(cfg.get("level_xp_growth", 1.5)),
-                )
-
-            # Daily-bounty progress for this rescue.
-            health_avg = await self._node_health_avg(session, msg.node_id)
-            warning = health_avg < float(cfg.get("node_warning_health", 50.0))
-            event = RescueEvent(meals=claimed, spoiled=spoiled, warning_node=warning)
-            completed_bounties = await bounties.record_rescue(
-                session, txn.user_id, datetime.now(UTC).date(), event
+            if user is None:
+                log.warning("Status txn=%s has no user, skipping", msg.txn_id)
+                return
+            await salvage.process_salvage(
+                session, user=user, node_id=msg.node_id, items=msg.items, txn_id=msg.txn_id
             )
-
-            await session.commit()
-            user_id = txn.user_id
-
-            ent = await entropy.compute_entropy(session)
-
-        await manager.send_to_user(
-            user_id,
-            envelope(
-                "resource_credited",
-                ResourceCredited(
-                    txn_id=msg.txn_id, gains=ResourceGains(**result.gains), xp=result.xp
-                ),
-            ),
-        )
-        await manager.broadcast(
-            envelope(
-                "entropy_update",
-                EntropyUpdate(total_entropy=ent.total, node_entropies=ent.per_node),
-            )
-        )
-        for bounty_id in completed_bounties:
-            await manager.send_to_user(
-                user_id, envelope("bounty_completed", BountyCompleted(bounty_id=bounty_id))
-            )
-            log.info("BOUNTY completed id=%s user=%s", bounty_id, user_id)
-        log.info(
-            "CREDITED txn=%s user=%s gains=%s xp=%s", msg.txn_id, user_id, result.gains, result.xp
-        )
-
-    async def _mark_foods_claimed(
-        self, session: AsyncSession, node_id: str, items: list[StatusItem], user_id: int
-    ) -> tuple[int, int]:
-        """Claim up to `count` unclaimed foods per class. Returns (claimed, spoiled)."""
-        claimed = 0
-        spoiled = 0
-        for item in items:
-            foods = (
-                (
-                    await session.execute(
-                        select(Food)
-                        .where(
-                            Food.node_id == node_id,
-                            Food.food_class == item.class_,
-                            Food.claimed.is_(False),
-                        )
-                        .limit(item.count)
-                    )
-                )
-                .scalars()
-                .all()
-            )
-            for food in foods:
-                food.claimed = True
-                food.claimed_by = user_id
-                claimed += 1
-                if food.spoiled:
-                    spoiled += 1
-        return claimed, spoiled
 
     async def _on_heartbeat(self, msg: Heartbeat) -> None:
         async with AsyncSessionLocal() as session:
@@ -313,7 +218,7 @@ class MqttBridge:
             node.status = "online"
             node.last_heartbeat = datetime.now(UTC)
             await session.commit()
-            health_avg = await self._node_health_avg(session, msg.node_id)
+            health_avg = await salvage.node_health_avg(session, msg.node_id)
         await manager.broadcast(
             envelope(
                 "node_status_update",
@@ -327,7 +232,7 @@ class MqttBridge:
             if node is not None:
                 node.status = "offline"
                 await session.commit()
-            health_avg = await self._node_health_avg(session, msg.node_id)
+            health_avg = await salvage.node_health_avg(session, msg.node_id)
         log.warning("Node OFFLINE (LWT) node=%s", msg.node_id)
         await manager.broadcast(
             envelope(
@@ -335,17 +240,3 @@ class MqttBridge:
                 NodeStatusUpdate(node_id=msg.node_id, status="offline", health_avg=health_avg),
             )
         )
-
-    async def _node_health_avg(self, session: AsyncSession, node_id: str) -> float:
-        foods = (
-            (
-                await session.execute(
-                    select(Food).where(Food.node_id == node_id, Food.claimed.is_(False))
-                )
-            )
-            .scalars()
-            .all()
-        )
-        if not foods:
-            return 0.0
-        return round(sum(f.health for f in foods) / len(foods), 2)
