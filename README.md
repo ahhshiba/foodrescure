@@ -85,6 +85,23 @@ Log in by registering a new operator, or use the dev seed account
 (`neo` / `password123`). Then drive `sim_edge.py` to see the unlock pulse,
 Nanos swarm, resource credit, entropy glitch, bounty + purity events live.
 
+## Frontend — UI2 ESG war room (`web/apps/dashboard`)
+
+Big-screen ops dashboard (recharts, auto-refresh 8s): CO₂/cost/meals KPIs,
+entropy trace, node topology, fleet-model accuracy gauge, leaderboard, live
+salvage feed. Public data — no login.
+
+```powershell
+cd web
+npm run dev:dashboard   # http://localhost:5174
+```
+
+Seed rich demo data first (30 days, ~750 transactions, hourly entropy):
+
+```powershell
+docker compose run --rm api python -m app.seed.mock_data --reset
+```
+
 ## `sim_edge.py` (simulated Raspberry Pi)
 
 Drives a full round (swipe → unlock → status → credit) against the broker so the
@@ -129,5 +146,5 @@ contract; the backend needs no changes.
 - **M3** ✅ decay engine + entropy snapshots + daily bounties + fleet-learning purity prompts on APScheduler.
 - **M4** ✅ full REST API (auth, account, nodes, inventory, nanos upgrade, bounties, feedback, ESG/stats) + integration tests.
 - **M5** ✅ UI1 game frontend — map glitch, Lidar ping, Nanos workbench, unlock/credit animations, auto-reconnect WS.
-- M6 — UI2 ESG dashboard + mock data generator.
+- **M6** ✅ UI2 ESG dashboard (recharts war room) + 30-day mock data generator.
 - M7 — polish, healthchecks, full lint/typecheck/test green.
