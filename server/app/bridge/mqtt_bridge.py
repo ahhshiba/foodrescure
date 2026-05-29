@@ -28,7 +28,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.config import settings
 from app.db.models import Card, Food, Node, Transaction, User
 from app.db.session import AsyncSessionLocal
-from app.engine import economy, entropy
+from app.engine import bounties, economy, entropy
+from app.engine.bounties import RescueEvent
 from app.schemas.mqtt import (
     SUB_AUTH_REQUEST,
     SUB_HEARTBEAT,
@@ -43,6 +44,7 @@ from app.schemas.mqtt import (
     topic_lock_command,
 )
 from app.schemas.ws import (
+    BountyCompleted,
     EntropyUpdate,
     NodeStatusUpdate,
     ResourceCredited,
@@ -219,7 +221,9 @@ class MqttBridge:
             txn.gains_json = result.gains
             txn.xp_awarded = result.xp
 
-            await self._mark_foods_claimed(session, msg.node_id, msg.items, txn.user_id)
+            claimed, spoiled = await self._mark_foods_claimed(
+                session, msg.node_id, msg.items, txn.user_id
+            )
 
             user = await session.get(User, txn.user_id)
             if user is not None:
@@ -229,6 +233,15 @@ class MqttBridge:
                     float(cfg.get("level_xp_base", 100)),
                     float(cfg.get("level_xp_growth", 1.5)),
                 )
+
+            # Daily-bounty progress for this rescue.
+            health_avg = await self._node_health_avg(session, msg.node_id)
+            warning = health_avg < float(cfg.get("node_warning_health", 50.0))
+            event = RescueEvent(meals=claimed, spoiled=spoiled, warning_node=warning)
+            completed_bounties = await bounties.record_rescue(
+                session, txn.user_id, datetime.now(UTC).date(), event
+            )
+
             await session.commit()
             user_id = txn.user_id
 
@@ -249,14 +262,21 @@ class MqttBridge:
                 EntropyUpdate(total_entropy=ent.total, node_entropies=ent.per_node),
             )
         )
+        for bounty_id in completed_bounties:
+            await manager.send_to_user(
+                user_id, envelope("bounty_completed", BountyCompleted(bounty_id=bounty_id))
+            )
+            log.info("BOUNTY completed id=%s user=%s", bounty_id, user_id)
         log.info(
             "CREDITED txn=%s user=%s gains=%s xp=%s", msg.txn_id, user_id, result.gains, result.xp
         )
 
     async def _mark_foods_claimed(
         self, session: AsyncSession, node_id: str, items: list[StatusItem], user_id: int
-    ) -> None:
-        """Best-effort: claim up to `count` unclaimed foods per class for entropy accuracy."""
+    ) -> tuple[int, int]:
+        """Claim up to `count` unclaimed foods per class. Returns (claimed, spoiled)."""
+        claimed = 0
+        spoiled = 0
         for item in items:
             foods = (
                 (
@@ -276,6 +296,10 @@ class MqttBridge:
             for food in foods:
                 food.claimed = True
                 food.claimed_by = user_id
+                claimed += 1
+                if food.spoiled:
+                    spoiled += 1
+        return claimed, spoiled
 
     async def _on_heartbeat(self, msg: Heartbeat) -> None:
         async with AsyncSessionLocal() as session:

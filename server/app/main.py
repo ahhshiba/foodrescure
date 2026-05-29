@@ -15,6 +15,7 @@ from fastapi import FastAPI
 
 from app.bridge.mqtt_bridge import MqttBridge
 from app.config import settings
+from app.scheduler import GlitchScheduler
 from app.ws.router import router as ws_router
 
 logging.basicConfig(
@@ -30,10 +31,15 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     bridge = MqttBridge()
     bridge_task = asyncio.create_task(bridge.run(), name="mqtt-bridge")
     app.state.bridge = bridge
+
+    scheduler = GlitchScheduler()
+    await scheduler.start()
+    app.state.scheduler = scheduler
     try:
         yield
     finally:
         log.info("Glitch Salvage API shutting down")
+        await scheduler.shutdown()
         await bridge.stop()
         bridge_task.cancel()
         try:
