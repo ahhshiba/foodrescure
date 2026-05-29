@@ -8,7 +8,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.db.models import Food, Node
+from app.db.models import Food, FoodClass, Node
 from app.db.session import get_session
 from app.engine import entropy
 from app.engine.entropy import food_entropy
@@ -50,8 +50,22 @@ async def get_node(node_id: str, session: AsyncSession = Depends(get_session)) -
         raise HTTPException(status_code=404, detail="Node not found")
     foods = (await session.execute(select(Food).where(Food.node_id == node_id))).scalars().all()
 
-    detail = NodeDetail.model_validate(node)
+    zh: dict[str, str] = {
+        row[0]: row[1]
+        for row in (
+            await session.execute(select(FoodClass.class_name, FoodClass.display_name_zh))
+        ).all()
+    }
+
+    out_foods: list[FoodOut] = []
+    for f in foods:
+        fo = FoodOut.model_validate(f)
+        fo.display_name_zh = zh.get(f.food_class) or None
+        out_foods.append(fo)
+
+    # Validate the base via NodeOut (no `foods` relationship -> no async lazy-load),
+    # then compose the detail with the eagerly-built food list.
+    detail = NodeDetail(**NodeOut.model_validate(node).model_dump(), foods=out_foods)
     detail.entropy = round(sum(food_entropy(f.health) for f in foods if not f.claimed), 4)
     detail.health_avg = _health_avg(foods)
-    detail.foods = [FoodOut.model_validate(f) for f in foods]
     return detail

@@ -130,6 +130,17 @@ async def test_salvage_bad_token(token: str) -> None:
         assert r.status_code == 401
 
 
+async def test_node_detail_returns_foods_with_zh_name() -> None:
+    # Regression: /nodes/{id} must not trigger an async lazy-load of `foods`.
+    nid = await _make_node(foods=1)
+    async with _client() as c:
+        r = await c.get(f"/api/v1/nodes/{nid}")
+        assert r.status_code == 200, r.text
+        body = r.json()
+        assert len(body["foods"]) == 1
+        assert body["foods"][0]["display_name_zh"] == "排骨便當"
+
+
 def test_create_access_token_smoke() -> None:
     # sanity: token mint/verify round-trips (used by ws_listen/dev_seed)
     assert create_access_token(1)

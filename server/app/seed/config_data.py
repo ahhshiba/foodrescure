@@ -21,6 +21,7 @@ FOOD_CLASSES: list[dict[str, Any]] = [
     {
         "class_name": "porkchop_bento",
         "display_name": "Porkchop Bento",
+        "display_name_zh": "排骨便當",
         "protein": 30.0,
         "carbs": 45.0,
         "lipids": 20.0,
@@ -31,6 +32,7 @@ FOOD_CLASSES: list[dict[str, Any]] = [
     {
         "class_name": "chicken_bento",
         "display_name": "Chicken Bento",
+        "display_name_zh": "雞腿便當",
         "protein": 35.0,
         "carbs": 40.0,
         "lipids": 12.0,
@@ -41,6 +43,7 @@ FOOD_CLASSES: list[dict[str, Any]] = [
     {
         "class_name": "veggie_bento",
         "display_name": "Veggie Bento",
+        "display_name_zh": "蔬食便當",
         "protein": 12.0,
         "carbs": 50.0,
         "lipids": 8.0,
@@ -51,6 +54,7 @@ FOOD_CLASSES: list[dict[str, Any]] = [
     {
         "class_name": "rice_ball",
         "display_name": "Rice Ball",
+        "display_name_zh": "飯糰",
         "protein": 6.0,
         "carbs": 35.0,
         "lipids": 4.0,
@@ -61,6 +65,7 @@ FOOD_CLASSES: list[dict[str, Any]] = [
     {
         "class_name": "sandwich",
         "display_name": "Sandwich",
+        "display_name_zh": "三明治",
         "protein": 14.0,
         "carbs": 30.0,
         "lipids": 16.0,
@@ -71,6 +76,7 @@ FOOD_CLASSES: list[dict[str, Any]] = [
     {
         "class_name": "salad_box",
         "display_name": "Salad Box",
+        "display_name_zh": "沙拉盒",
         "protein": 8.0,
         "carbs": 18.0,
         "lipids": 10.0,
@@ -81,6 +87,7 @@ FOOD_CLASSES: list[dict[str, Any]] = [
     {
         "class_name": "pasta_box",
         "display_name": "Pasta Box",
+        "display_name_zh": "義大利麵盒",
         "protein": 16.0,
         "carbs": 55.0,
         "lipids": 18.0,
@@ -91,6 +98,7 @@ FOOD_CLASSES: list[dict[str, Any]] = [
     {
         "class_name": "sushi_set",
         "display_name": "Sushi Set",
+        "display_name_zh": "壽司組合",
         "protein": 22.0,
         "carbs": 48.0,
         "lipids": 9.0,

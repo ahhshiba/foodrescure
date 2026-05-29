@@ -94,6 +94,7 @@ class FoodClass(Base):
 
     class_name: Mapped[str] = mapped_column(String(64), primary_key=True)  # e.g. "porkchop_bento"
     display_name: Mapped[str] = mapped_column(String(128))
+    display_name_zh: Mapped[str] = mapped_column(String(128), default="", server_default="")
     protein: Mapped[float] = mapped_column(Float, default=0.0)
     carbs: Mapped[float] = mapped_column(Float, default=0.0)
     lipids: Mapped[float] = mapped_column(Float, default=0.0)

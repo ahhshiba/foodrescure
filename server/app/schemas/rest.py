@@ -72,6 +72,7 @@ class FoodOut(BaseModel):
     model_config = ORM
     id: int
     food_class: str
+    display_name_zh: str | None = None
     health: float
     spoiled: bool
     claimed: bool

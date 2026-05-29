@@ -23,12 +23,16 @@ log = logging.getLogger("glitch.seed")
 
 async def seed_config() -> None:
     async with AsyncSessionLocal() as session:
-        # food_classes
-        await session.execute(
-            insert(FoodClass)
-            .values(FOOD_CLASSES)
-            .on_conflict_do_nothing(index_elements=["class_name"])
+        # food_classes — refresh display names on conflict so zh names propagate.
+        fc_stmt = insert(FoodClass).values(FOOD_CLASSES)
+        fc_stmt = fc_stmt.on_conflict_do_update(
+            index_elements=["class_name"],
+            set_={
+                "display_name": fc_stmt.excluded.display_name,
+                "display_name_zh": fc_stmt.excluded.display_name_zh,
+            },
         )
+        await session.execute(fc_stmt)
         # nanos_types
         await session.execute(
             insert(NanosType).values(NANOS_TYPES).on_conflict_do_nothing(index_elements=["type"])

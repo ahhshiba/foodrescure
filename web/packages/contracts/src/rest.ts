@@ -52,6 +52,7 @@ export interface UpgradeResponse {
 export interface FoodOut {
   id: number;
   food_class: string;
+  display_name_zh: string | null;
   health: number;
   spoiled: boolean;
   claimed: boolean;
