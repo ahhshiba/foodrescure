@@ -1,3 +1,42 @@
+# ⚡ Glitch Salvage: Neon Feast (破圖回收：霓虹盛宴)
+
+> **將校園剩食救援轉化為賽博龐克風格的資源回收與養成遊戲，結合邊緣 AI、物聯網與車隊學習（Fleet Learning）的 ESG 解決方案。**
+
+## 📖 專案簡介
+
+「破圖回收：霓虹盛宴」是一個為了解決校園與活動餐盒剩食浪費而生的即時轉讓系統。我們打破傳統「領取剩食」的社交標籤壓力，將其包裝成一款具備科技樹升級、資源管理與全域狀態連動的真實世界放置收集遊戲。
+
+每一次的剩食救援，不僅是減少碳排放，更是透過使用者的事後回饋，為「真實世界剩食衰減預測模型」進行資料標註，實現越多人使用越聰明的資料飛輪（Data Flywheel）。
+
+## 🏗️ 系統架構
+
+本系統分為三大核心節點，透過 **Tailscale** 虛擬區域網路與 **Nginx** 反向代理進行通訊橋接：
+
+1. **邊緣端 (Edge Node) - 樹梅派 + 實體智慧櫃**
+   - **硬體**：Raspberry Pi 4/5、RFID RC522 讀卡機、繼電器 + 電磁鎖、USB 攝影機。
+   - **AI 推論**：YOLOv8n (TFLite)，負責辨識放入餐盒的品項與數量。
+   - **通訊**：MQTT 客戶端，斷線自動重連，負責向雲端回報狀態與接收開鎖指令。
+
+2. **雲端後端 (Cloud Server) - 狀態指揮中心**
+   - **核心**：Node.js (Express) 或 FastAPI，搭配 PostgreSQL。
+   - **熱力學衰減引擎 (Decay Engine)**：動態計算食物健康度，溫度過高時呈指數衰減。
+   - **通訊橋接 (The Bridge)**：內建 MQTT 訂閱邊緣端狀態，並透過 WebSocket 即時廣播給前端 App。
+
+3. **應用前端 (Client UI) - 遊戲 App 與戰情室**
+   - **UI 1 (玩家 App)**：Cyber-Grid 賽博龐克風格，提供雷射雷達掃描 (Lidar Ping)、微型工作檯升級與即時脈衝動畫。
+   - **UI 2 (ESG Dashboard)**：指揮中心視角，展示即時減碳量、網路拓樸與車隊預測模型準確度。
+
+## ✨ 核心亮點功能
+
+* **虛實資源轉換 (Deconstruct)**：實體餐盒 (如：排骨便當) 經 AI 辨識後，轉換為遊戲內的生化原料 (蛋白質、碳水化合物)，供玩家升級「奈米除蟲器 (Nanos)」。
+* **熱力學急迫性**：食物健康度隨環境溫濕度動態衰減，健康度過低將轉化為「生化毒素」，需要高等級的 Nanos 才能處理。
+* **全球熵值連動 (Global Entropy)**：系統剩食總量與衰減度會影響遊戲介面，熵值過高會導致畫面出現「破圖 (Glitch)」特效。
+* **事後標註回饋 (Feedback Loop)**：領取食物兩小時後，系統推播請求玩家評分，完成 AI 訓練的資料閉環。
+
+## 🚀 部署與啟動
+
+詳細的環境設定與啟動步驟，請參閱下方的「如何開始 (Getting Started)」。
+
 # Glitch Salvage: Neon Feast — Backend / Frontend / Infra
 
 Campus surplus-food redistribution + fleet-learning system, disguised as a
@@ -188,5 +227,4 @@ glitch-salvage/
     ├── packages/contracts/     # @glitch/contracts — TS mirror of backend contracts
     └── apps/{game,dashboard}/  # UI1 player game · UI2 ESG war room
 ```
-#   f o o d r e s c u r e  
- 
+#
