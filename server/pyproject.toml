@@ -35,3 +35,7 @@ mypy_path = "."
 asyncio_mode = "auto"
 testpaths = ["tests"]
 addopts = "-v"
+filterwarnings = [
+    # passlib reads the stdlib `crypt` module, deprecated in 3.11; harmless here.
+    "ignore:'crypt' is deprecated:DeprecationWarning",
+]
