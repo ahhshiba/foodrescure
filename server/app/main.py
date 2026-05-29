@@ -13,7 +13,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from app.api import account, auth, bounties, feedback, nodes, stats
+from app.api import account, auth, bounties, feedback, nodes, salvage, stats
 from app.bridge.mqtt_bridge import MqttBridge
 from app.config import settings
 from app.scheduler import GlitchScheduler
@@ -61,6 +61,7 @@ _API = "/api/v1"
 app.include_router(auth.router, prefix=_API)
 app.include_router(account.router, prefix=_API)
 app.include_router(nodes.router, prefix=_API)
+app.include_router(salvage.router, prefix=_API)
 app.include_router(bounties.router, prefix=_API)
 app.include_router(feedback.router, prefix=_API)
 app.include_router(stats.router, prefix=_API)

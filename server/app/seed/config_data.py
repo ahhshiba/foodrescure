@@ -234,6 +234,11 @@ ECONOMY_CONFIG: list[dict[str, Any]] = [
         "value_json": 90,
         "description": "No heartbeat for this long -> node marked offline (M3 scheduler)",
     },
+    {
+        "key": "salvage_cooldown_s",
+        "value_json": 3,
+        "description": "Per-user click-debounce between virtual salvage actions",
+    },
     # ---- M3: live environment used by the decay engine (demo-tunable) ----
     {
         "key": "env_temp_c",

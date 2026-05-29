@@ -94,6 +94,19 @@ class NodeDetail(NodeOut):
     foods: list[FoodOut] = []
 
 
+# ---- Virtual salvage ----
+class SalvageRequest(BaseModel):
+    # Default rescue one meal; players may opt to grab more (clamped to stock).
+    count: int = Field(default=1, ge=1, le=20)
+
+
+class SalvageResponse(BaseModel):
+    txn_id: str
+    gains: dict[str, float]
+    xp: int
+    claimed: int
+
+
 # ---- Bounties ----
 class BountyOut(BaseModel):
     model_config = ORM

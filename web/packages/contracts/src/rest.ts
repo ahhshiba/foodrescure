@@ -73,6 +73,17 @@ export interface NodeDetail extends NodeOut {
   foods: FoodOut[];
 }
 
+export interface SalvageRequest {
+  count: number;
+}
+
+export interface SalvageResponse {
+  txn_id: string;
+  gains: Record<string, number>;
+  xp: number;
+  claimed: number;
+}
+
 export interface BountyOut {
   id: number;
   spec_json: Record<string, unknown>;
