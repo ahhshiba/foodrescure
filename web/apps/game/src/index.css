@@ -1,0 +1,154 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --glitch: 0; /* 0..1 entropy-driven glitch intensity, set at runtime */
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: radial-gradient(ellipse at top, #0a0f1f 0%, #05060a 70%);
+  color: #c7f9cc;
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  overflow: hidden;
+}
+
+/* ---- CRT scanlines overlay (intensity scales with --glitch) ---- */
+.crt::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0px,
+    rgba(0, 0, 0, calc(0.15 + 0.35 * var(--glitch))) 2px,
+    rgba(0, 0, 0, 0) 3px
+  );
+  z-index: 50;
+  animation: flicker calc(4s - 3s * var(--glitch)) infinite;
+}
+
+@keyframes flicker {
+  0%,
+  97%,
+  100% {
+    opacity: 1;
+  }
+  98% {
+    opacity: calc(1 - 0.4 * var(--glitch));
+  }
+}
+
+/* ---- RGB-split glitch text ---- */
+.glitch-text {
+  position: relative;
+  text-shadow:
+    calc(2px * var(--glitch)) 0 #ff2a6d,
+    calc(-2px * var(--glitch)) 0 #05d9e8;
+  animation: jitter calc(2s - 1.6s * var(--glitch)) steps(2) infinite;
+}
+@keyframes jitter {
+  0%,
+  92%,
+  100% {
+    transform: translate(0, 0);
+  }
+  94% {
+    transform: translate(calc(2px * var(--glitch)), calc(-1px * var(--glitch)));
+  }
+  96% {
+    transform: translate(calc(-2px * var(--glitch)), calc(1px * var(--glitch)));
+  }
+}
+
+/* ---- Blue pulse ring on unlock ---- */
+.pulse-ring {
+  border-radius: 9999px;
+  border: 3px solid #1f8fff;
+  animation: pulse 1.6s ease-out forwards;
+}
+@keyframes pulse {
+  0% {
+    transform: scale(0.2);
+    opacity: 0.9;
+    box-shadow: 0 0 40px 10px rgba(31, 143, 255, 0.6);
+  }
+  100% {
+    transform: scale(3.2);
+    opacity: 0;
+    box-shadow: 0 0 80px 40px rgba(31, 143, 255, 0);
+  }
+}
+
+/* ---- Nanos swarm dots ---- */
+.nano {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: #39ff14;
+  box-shadow: 0 0 6px #39ff14;
+  animation: swarm 1.4s ease-in forwards;
+}
+@keyframes swarm {
+  0% {
+    transform: translate(var(--sx), var(--sy)) scale(0.4);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0, 0) scale(1.2);
+    opacity: 0;
+  }
+}
+
+/* ---- Lidar ping ---- */
+.lidar {
+  border-radius: 9999px;
+  border: 2px solid #05d9e8;
+  animation: lidar 0.9s ease-out forwards;
+}
+@keyframes lidar {
+  0% {
+    transform: scale(0.3);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+/* credit number float */
+.credit-float {
+  animation: floatUp 1.6s ease-out forwards;
+}
+@keyframes floatUp {
+  0% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-40px);
+    opacity: 0;
+  }
+}
+
+.panel {
+  background: rgba(11, 15, 26, 0.82);
+  border: 1px solid rgba(57, 255, 20, 0.25);
+  backdrop-filter: blur(4px);
+}
