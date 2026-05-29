@@ -9,8 +9,9 @@
   ],
   "scripts": {
     "build:contracts": "npm run build --workspace @glitch/contracts",
-    "build": "npm run build:contracts && npm run build --workspace @glitch/game",
+    "build": "npm run build:contracts && npm run build --workspace @glitch/game && npm run build --workspace @glitch/dashboard",
     "dev": "npm run dev --workspace @glitch/game",
+    "dev:dashboard": "npm run dev --workspace @glitch/dashboard",
     "test": "npm run test --workspaces --if-present",
     "lint": "eslint . --max-warnings 0",
     "typecheck": "npm run typecheck --workspaces --if-present"
