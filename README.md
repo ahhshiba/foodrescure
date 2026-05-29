@@ -25,26 +25,40 @@ contract in [`server/app/schemas/mqtt.py`](server/app/schemas/mqtt.py) and ship
 Copy-Item .env.example .env
 #   then edit .env — set real POSTGRES_PASSWORD / MQTT_PASSWORD / JWT_SECRET
 
-# 2. Bring up the stack (postgres + mosquitto + api + nginx)
+# 2. Build + bring up the whole stack
+#    (postgres + mosquitto + api + nginx; nginx also BUILDS both frontends)
 docker compose up -d --build
 
-# 3. Run DB migrations + seed the config tables
+# 3. Migrate + seed
 docker compose run --rm api alembic upgrade head
-docker compose run --rm api python -m app.seed.config_seed
+docker compose run --rm api python -m app.seed.config_seed         # tunable constants
+docker compose run --rm api python -m app.seed.mock_data --reset    # 30 days of demo data
+docker compose run --rm api python -m app.seed.dev_seed             # 'neo' smoke account + card
 
-# 4. Health check
-curl http://localhost:8000/health        # direct API
-curl http://localhost/health             # via nginx
+# 4. Open it
+#    Player game (UI1):  http://localhost/
+#    ESG war room (UI2):  http://localhost/dashboard/
+#    API health:          http://localhost/health
+```
+
+Then drive a live round (see the unlock pulse + resource credit in UI1):
+
+```powershell
+docker compose run --rm api python scripts/sim_edge.py --swipe
 ```
 
 ## Services & ports
 
-| Service    | Container | Host port            | Notes                                  |
-|------------|-----------|----------------------|----------------------------------------|
-| API        | `api`     | `8000` (+ `5678`)    | FastAPI; 5678 = debugpy attach         |
-| Postgres   | `postgres`| `5432`               | data in `pg_data` volume               |
-| Mosquitto  | `mosquitto`| `1883`              | user/pass from `.env`; Edge connects here |
-| nginx      | `nginx`   | `80`                 | reverse proxy + WebSocket upgrade      |
+| Service    | Container   | Host port         | Notes                                                  |
+|------------|-------------|-------------------|--------------------------------------------------------|
+| nginx      | `nginx`     | `80`              | serves UI1 at `/`, UI2 at `/dashboard/`; proxies `/api` + `/ws` |
+| API        | `api`       | `8000` (+ `5678`) | FastAPI; 5678 = debugpy attach                         |
+| Postgres   | `postgres`  | `5432`            | data in `pg_data` volume                               |
+| Mosquitto  | `mosquitto` | `1883`            | user/pass from `.env`; the external Edge connects here |
+
+> **Re-running** `docker compose up -d --build` rebuilds the frontends into the
+> nginx image. For hot-reload UI development use the Vite dev servers instead
+> (`npm run dev` / `npm run dev:dashboard`, see below).
 
 ## Tests / lint
 
@@ -147,4 +161,30 @@ contract; the backend needs no changes.
 - **M4** ✅ full REST API (auth, account, nodes, inventory, nanos upgrade, bounties, feedback, ESG/stats) + integration tests.
 - **M5** ✅ UI1 game frontend — map glitch, Lidar ping, Nanos workbench, unlock/credit animations, auto-reconnect WS.
 - **M6** ✅ UI2 ESG dashboard (recharts war room) + 30-day mock data generator.
-- M7 — polish, healthchecks, full lint/typecheck/test green.
+- **M7** ✅ nginx serves both built frontends + WS upgrade, healthchecks, full lint/typecheck/test green.
+
+## Repo layout
+
+```
+glitch-salvage/
+├── docker-compose.yml          # postgres · mosquitto · api · nginx(+frontends)
+├── infra/
+│   ├── nginx/{nginx.conf,Dockerfile}   # reverse proxy + multi-stage web build
+│   └── mosquitto/{mosquitto.conf,entrypoint.sh}
+├── server/                     # FastAPI backend
+│   ├── app/
+│   │   ├── schemas/            # contracts: mqtt (frozen) · ws · rest (Pydantic)
+│   │   ├── db/models.py        # SQLAlchemy 2.0 schema (single source of truth)
+│   │   ├── bridge/mqtt_bridge.py   # MQTT ↔ DB ↔ WS core
+│   │   ├── engine/             # decay · economy · entropy · bounties (pure + repo)
+│   │   ├── ws/                 # WebSocket manager + router
+│   │   ├── api/                # REST routers (/api/v1)
+│   │   ├── scheduler.py        # APScheduler jobs
+│   │   └── seed/               # config_data + config/dev/mock seeders
+│   ├── scripts/{sim_edge.py,ws_listen.py}
+│   ├── alembic/                # migrations
+│   └── tests/                  # pytest (contracts · economy · decay · bounties · api)
+└── web/                        # npm workspaces monorepo
+    ├── packages/contracts/     # @glitch/contracts — TS mirror of backend contracts
+    └── apps/{game,dashboard}/  # UI1 player game · UI2 ESG war room
+```
