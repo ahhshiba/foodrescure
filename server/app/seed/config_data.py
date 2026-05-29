@@ -224,4 +224,14 @@ ECONOMY_CONFIG: list[dict[str, Any]] = [
         "value_json": 4,
         "description": "Anti-abuse: max card swipes per minute before flagging",
     },
+    {
+        "key": "lock_duration_s",
+        "value_json": 5,
+        "description": "Seconds the cabinet relay stays unlocked (lock/command duration_s)",
+    },
+    {
+        "key": "heartbeat_timeout_s",
+        "value_json": 90,
+        "description": "No heartbeat for this long -> node marked offline (M3 scheduler)",
+    },
 ]
