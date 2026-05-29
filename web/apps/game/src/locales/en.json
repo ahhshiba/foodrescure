@@ -1,0 +1,73 @@
+{
+  "common": {
+    "protein": "protein",
+    "carbs": "carbs",
+    "lipids": "lipids",
+    "xp": "xp",
+    "level": "level",
+    "entropy": "entropy"
+  },
+  "login": {
+    "subtitle": "Neon Feast // operator login",
+    "callsign": "CALLSIGN",
+    "email": "UPLINK EMAIL",
+    "passphrase": "PASSPHRASE",
+    "jackIn": "JACK IN",
+    "register": "REGISTER",
+    "toRegister": "No rig yet? Register a new operator",
+    "toLogin": "Already an operator? Jack in",
+    "failed": "Connection failed"
+  },
+  "hud": {
+    "operator": "operator",
+    "eject": "EJECT"
+  },
+  "map": {
+    "cityGrid": "CITY GRID // {{count}} nodes",
+    "hp": "hp",
+    "entropyShort": "e"
+  },
+  "node": {
+    "hint": "Ping a node on the grid to scan its contents.",
+    "scanning": "scanning…",
+    "biotoxin": "biotoxin",
+    "empty": "No unclaimed payload. Fully salvaged.",
+    "salvage": "SALVAGE",
+    "salvaging": "salvaging…"
+  },
+  "workbench": {
+    "title": "MICRO-FOUNDRY // nanos",
+    "upgrade": "UPGRADE",
+    "loading": "loading rig…",
+    "welder_spider": "Welder Spider",
+    "welder_spider_blurb": "Faster unlock→salvage cycle",
+    "suction_jelly": "Suction Jelly",
+    "suction_jelly_blurb": "Lossless biotoxin recovery",
+    "crawler": "Heavy Crawler",
+    "crawler_blurb": "Batch-rescue bonus"
+  },
+  "bounty": {
+    "title": "DIRECTIVES // today",
+    "claim": "CLAIM",
+    "claimed": "CLAIMED ✓",
+    "empty": "No directives posted yet."
+  },
+  "feed": {
+    "title": "signal feed",
+    "awaiting": "awaiting signal…",
+    "uplink": "UPLINK ESTABLISHED",
+    "uplinkLost": "UPLINK LOST // retry {{s}}s",
+    "unlock": "UNLOCK // {{node}} :: nanos deployed",
+    "credit": "SALVAGE +P{{p}} +C{{c}} +L{{l}} (+{{xp}}xp)",
+    "node": "NODE {{node}} :: {{status}} (hp {{hp}})",
+    "bountyNew": "NEW DIRECTIVE posted",
+    "bountyDone": "DIRECTIVE #{{id}} COMPLETE",
+    "purity": "PURITY SCAN requested"
+  },
+  "purity": {
+    "title": "PURITY SCAN",
+    "desc": "Rate the freshness of your last salvage. Your scan trains the fleet model.",
+    "dismiss": "dismiss"
+  },
+  "lang": { "toggle": "中文" }
+}

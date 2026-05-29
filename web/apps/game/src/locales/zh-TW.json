@@ -1,0 +1,73 @@
+{
+  "common": {
+    "protein": "蛋白質",
+    "carbs": "碳水",
+    "lipids": "脂質",
+    "xp": "經驗",
+    "level": "等級",
+    "entropy": "熵值"
+  },
+  "login": {
+    "subtitle": "霓虹盛宴 // 指揮官登入",
+    "callsign": "代號",
+    "email": "連線信箱",
+    "passphrase": "通行碼",
+    "jackIn": "接入",
+    "register": "註冊",
+    "toRegister": "還沒有機甲？註冊新指揮官",
+    "toLogin": "已是指揮官？接入",
+    "failed": "連線失敗"
+  },
+  "hud": {
+    "operator": "指揮官",
+    "eject": "登出"
+  },
+  "map": {
+    "cityGrid": "城市網格 // {{count}} 個節點",
+    "hp": "血量",
+    "entropyShort": "熵"
+  },
+  "node": {
+    "hint": "在網格上點擊節點以掃描內容。",
+    "scanning": "掃描中…",
+    "biotoxin": "生化毒素",
+    "empty": "無未領取物資，已全數救援。",
+    "salvage": "採集",
+    "salvaging": "採集中…"
+  },
+  "workbench": {
+    "title": "微型工作檯 // 奈米機",
+    "upgrade": "升級",
+    "loading": "載入機甲中…",
+    "welder_spider": "銲槍蜘蛛",
+    "welder_spider_blurb": "加速解鎖→救援循環",
+    "suction_jelly": "抽吸水母",
+    "suction_jelly_blurb": "無損回收生化毒素",
+    "crawler": "重壓履帶車",
+    "crawler_blurb": "批量救援加成"
+  },
+  "bounty": {
+    "title": "今日任務",
+    "claim": "領取",
+    "claimed": "已領取 ✓",
+    "empty": "尚無任務發佈。"
+  },
+  "feed": {
+    "title": "訊號流",
+    "awaiting": "等待訊號…",
+    "uplink": "上行鏈路已建立",
+    "uplinkLost": "鏈路中斷 // {{s}} 秒後重試",
+    "unlock": "解鎖 // {{node}} :: 奈米機已部署",
+    "credit": "救援 +蛋白{{p}} +碳水{{c}} +脂質{{l}} (+{{xp}} 經驗)",
+    "node": "節點 {{node}} :: {{status}} (血量 {{hp}})",
+    "bountyNew": "新任務發佈",
+    "bountyDone": "任務 #{{id}} 完成",
+    "purity": "已請求純度掃描"
+  },
+  "purity": {
+    "title": "純度掃描",
+    "desc": "為你最近的救援評定新鮮度。你的掃描會訓練車隊模型。",
+    "dismiss": "略過"
+  },
+  "lang": { "toggle": "EN" }
+}

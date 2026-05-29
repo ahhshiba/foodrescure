@@ -4,14 +4,15 @@ export default {
   theme: {
     extend: {
       colors: {
+        // UI1 high-brightness tech palette (brief §5).
         neon: {
           green: '#39ff14',
-          magenta: '#ff2a6d',
-          cyan: '#05d9e8',
+          magenta: '#FF003C',
+          cyan: '#00F0FF',
           blue: '#1f8fff',
         },
-        void: '#05060a',
-        panel: '#0b0f1a',
+        void: '#0F172A',
+        panel: '#0b1322',
       },
       fontFamily: {
         mono: ['"JetBrains Mono"', '"Fira Code"', 'Consolas', 'monospace'],

@@ -1,5 +1,6 @@
 import type { NodeOut } from '@glitch/contracts';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNodes } from '../api/hooks';
 import { playPing } from '../lib/audio';
 import { useGame } from '../store/game';
@@ -38,6 +39,7 @@ function positions(nodes: NodeOut[]): Record<string, Pos> {
 }
 
 export function MapView() {
+  const { t } = useTranslation();
   const { data: nodes = [] } = useNodes();
   const selectNode = useGame((s) => s.selectNode);
   const nodeEntropies = useGame((s) => s.nodeEntropies);
@@ -67,7 +69,7 @@ export function MapView() {
         }}
       />
       <div className="absolute left-3 top-2 text-xs uppercase tracking-[0.3em] text-neon-cyan/70">
-        CITY GRID // {nodes.length} nodes
+        {t('map.cityGrid', { count: nodes.length })}
       </div>
 
       {nodes.map((node) => {
@@ -91,7 +93,7 @@ export function MapView() {
             />
             <div className={`text-[10px] font-bold ${color}`}>{node.name}</div>
             <div className="text-[9px] text-neon-cyan/60">
-              hp {node.health_avg.toFixed(0)} · e {ent.toFixed(2)}
+              {t('map.hp')} {node.health_avg.toFixed(0)} · {t('map.entropyShort')} {ent.toFixed(2)}
             </div>
           </button>
         );

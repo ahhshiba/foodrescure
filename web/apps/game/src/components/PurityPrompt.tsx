@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSubmitFeedback } from '../api/hooks';
 import { useGame } from '../store/game';
 
 export function PurityPrompt() {
+  const { t } = useTranslation();
   const purityTxn = useGame((s) => s.purityTxn);
   const setPurity = useGame((s) => s.setPurity);
   const submit = useSubmitFeedback();
@@ -20,10 +22,8 @@ export function PurityPrompt() {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
       <div className="panel w-[340px] rounded-lg p-6 text-center shadow-magenta">
-        <h2 className="glitch-text mb-1 text-lg font-bold text-neon-magenta">PURITY SCAN</h2>
-        <p className="mb-4 text-xs text-neon-cyan">
-          Rate the freshness of your last salvage. Your scan trains the fleet model.
-        </p>
+        <h2 className="glitch-text mb-1 text-lg font-bold text-neon-magenta">{t('purity.title')}</h2>
+        <p className="mb-4 text-xs text-neon-cyan">{t('purity.desc')}</p>
         <div className="mb-4 flex justify-center gap-2">
           {[1, 2, 3, 4, 5].map((s) => (
             <button
@@ -44,7 +44,7 @@ export function PurityPrompt() {
           onClick={() => setPurity(null)}
           className="text-[10px] text-neon-cyan/60 hover:underline"
         >
-          dismiss
+          {t('purity.dismiss')}
         </button>
       </div>
     </div>

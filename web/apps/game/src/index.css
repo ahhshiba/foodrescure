@@ -14,7 +14,7 @@ body,
 }
 
 body {
-  background: radial-gradient(ellipse at top, #0a0f1f 0%, #05060a 70%);
+  background: radial-gradient(ellipse at top, #13203a 0%, #0f172a 70%);
   color: #c7f9cc;
   font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
   overflow: hidden;

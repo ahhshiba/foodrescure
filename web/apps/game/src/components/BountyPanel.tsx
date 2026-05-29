@@ -1,4 +1,5 @@
 import type { BountyOut } from '@glitch/contracts';
+import { useTranslation } from 'react-i18next';
 import { useBounties, useClaimBounty } from '../api/hooks';
 
 function progressPct(b: BountyOut): number {
@@ -7,12 +8,13 @@ function progressPct(b: BountyOut): number {
 }
 
 export function BountyPanel() {
+  const { t } = useTranslation();
   const { data } = useBounties();
   const claim = useClaimBounty();
 
   return (
     <div className="panel flex h-full flex-col rounded-lg p-4">
-      <h2 className="mb-3 text-sm font-bold text-neon-green">DIRECTIVES // today</h2>
+      <h2 className="mb-3 text-sm font-bold text-neon-green">{t('bounty.title')}</h2>
       <div className="flex-1 space-y-3 overflow-y-auto pr-1">
         {data?.map((b) => (
           <div key={b.id} className="rounded border border-neon-green/20 bg-black/40 p-3">
@@ -28,21 +30,21 @@ export function BountyPanel() {
                 {b.progress}/{String(b.spec_json?.target ?? 1)}
               </span>
               {b.claimed ? (
-                <span className="text-[10px] text-neon-green/70">CLAIMED ✓</span>
+                <span className="text-[10px] text-neon-green/70">{t('bounty.claimed')}</span>
               ) : (
                 <button
                   disabled={!b.completed || claim.isPending}
                   onClick={() => claim.mutate(b.id)}
                   className="rounded bg-neon-magenta/15 px-2 py-0.5 text-[10px] font-bold text-neon-magenta ring-1 ring-neon-magenta/50 enabled:hover:bg-neon-magenta/25 disabled:opacity-30"
                 >
-                  CLAIM
+                  {t('bounty.claim')}
                 </button>
               )}
             </div>
           </div>
         ))}
         {data && data.length === 0 && (
-          <div className="text-xs text-neon-cyan/60">No directives posted yet.</div>
+          <div className="text-xs text-neon-cyan/60">{t('bounty.empty')}</div>
         )}
       </div>
     </div>

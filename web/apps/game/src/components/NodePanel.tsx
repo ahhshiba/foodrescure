@@ -1,5 +1,6 @@
 import type { NodeDetail } from '@glitch/contracts';
 import { useQuery } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { api } from '../api/client';
 import { useAuth } from '../store/auth';
 import { useGame } from '../store/game';
@@ -11,6 +12,7 @@ function healthColor(h: number): string {
 }
 
 export function NodePanel() {
+  const { t, i18n } = useTranslation();
   const token = useAuth((s) => s.token);
   const selectedNodeId = useGame((s) => s.selectedNodeId);
   const selectNode = useGame((s) => s.selectNode);
@@ -25,7 +27,7 @@ export function NodePanel() {
   if (!selectedNodeId) {
     return (
       <div className="panel flex h-full items-center justify-center rounded-lg p-4 text-center text-xs text-neon-cyan/60">
-        Ping a node on the grid to scan its contents.
+        {t('node.hint')}
       </div>
     );
   }
@@ -42,7 +44,7 @@ export function NodePanel() {
         {data?.location} · {data?.status ?? '...'}
       </div>
 
-      {isLoading && <div className="text-xs text-neon-cyan/60">scanning…</div>}
+      {isLoading && <div className="text-xs text-neon-cyan/60">{t('node.scanning')}</div>}
 
       <div className="flex-1 space-y-2 overflow-y-auto pr-1">
         {data?.foods
@@ -51,8 +53,8 @@ export function NodePanel() {
             <div key={f.id} className="rounded border border-neon-green/20 bg-black/40 p-2">
               <div className="flex justify-between text-xs">
                 <span className={f.spoiled ? 'text-neon-magenta' : 'text-neon-green'}>
-                  {f.food_class}
-                  {f.spoiled && ' ⚠ biotoxin'}
+                  {i18n.language === 'zh-TW' && f.display_name_zh ? f.display_name_zh : f.food_class}
+                  {f.spoiled && ` ⚠ ${t('node.biotoxin')}`}
                 </span>
                 <span className="text-neon-cyan/70">{f.health.toFixed(0)}%</span>
               </div>
@@ -65,7 +67,7 @@ export function NodePanel() {
             </div>
           ))}
         {data && data.foods.filter((f) => !f.claimed).length === 0 && (
-          <div className="text-xs text-neon-cyan/60">No unclaimed payload. Fully salvaged.</div>
+          <div className="text-xs text-neon-cyan/60">{t('node.empty')}</div>
         )}
       </div>
     </div>
