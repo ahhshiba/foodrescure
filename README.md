@@ -66,8 +66,23 @@ npm run typecheck
 
 ## `sim_edge.py` (simulated Raspberry Pi)
 
-Lands in M2. Drives a full round (swipe → unlock → status → credit) against the
-broker so the whole data flow can be validated without physical hardware.
+Drives a full round (swipe → unlock → status → credit) against the broker so the
+whole data flow is validated without physical hardware. Run the dev seed first
+(creates the test player `neo`, a claimed card, nodes, foods, and prints a JWT):
+
+```powershell
+docker compose run --rm api python -m app.seed.dev_seed
+
+# Terminal A — watch WebSocket events for user 1
+docker compose run --rm api python scripts/ws_listen.py --user-id 1
+
+# Terminal B — simulate one card swipe at node-01
+docker compose run --rm api python scripts/sim_edge.py --swipe --items "porkchop_bento:2,chicken_bento:1"
+```
+
+The listener should print `unlock_success` → `resource_credited` → `entropy_update`.
+From the Windows host instead of a container, add `--host localhost` to `sim_edge`
+and `--url ws://localhost:8000/ws` to `ws_listen` (needs `pip install aiomqtt websockets pydantic`).
 
 ## External Edge onboarding
 
@@ -89,7 +104,7 @@ contract; the backend needs no changes.
 ## Milestones
 
 - **M1** ✅ Contracts & skeleton — compose up, migrations, seed, contract types/tests.
-- M2 — MQTT bridge + WS manager + deconstruct + `sim_edge.py`.
+- **M2** ✅ MQTT bridge + WS manager + deconstruct + `sim_edge.py` (full flow verified).
 - M3 — decay / entropy / bounties / fleet-learning on APScheduler.
 - M4 — full REST API + tests.
 - M5 — UI1 game frontend.
