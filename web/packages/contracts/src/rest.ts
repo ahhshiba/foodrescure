@@ -31,6 +31,9 @@ export interface MeResponse {
   username: string;
   level: number;
   xp: number;
+  protein: number;
+  carbs: number;
+  lipids: number;
 }
 
 export interface InventoryResponse {
@@ -62,6 +65,8 @@ export interface NodeOut {
   last_heartbeat: string | null;
   lat: number | null;
   lng: number | null;
+  entropy: number;
+  health_avg: number;
 }
 
 export interface NodeDetail extends NodeOut {

@@ -106,7 +106,7 @@ contract; the backend needs no changes.
 - **M1** ✅ Contracts & skeleton — compose up, migrations, seed, contract types/tests.
 - **M2** ✅ MQTT bridge + WS manager + deconstruct + `sim_edge.py` (full flow verified).
 - **M3** ✅ decay engine + entropy snapshots + daily bounties + fleet-learning purity prompts on APScheduler.
-- M4 — full REST API + tests.
+- **M4** ✅ full REST API (auth, account, nodes, inventory, nanos upgrade, bounties, feedback, ESG/stats) + integration tests.
 - M5 — UI1 game frontend.
 - M6 — UI2 ESG dashboard + mock data generator.
 - M7 — polish, healthchecks, full lint/typecheck/test green.
