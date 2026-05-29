@@ -26,6 +26,9 @@ infra/mosquitto/passwd
 infra/mosquitto/data/
 infra/mosquitto/log/
 
+# ---- Claude Code harness / project memory ----
+.claude/
+
 # ---- Editors / OS ----
 .DS_Store
 Thumbs.db
