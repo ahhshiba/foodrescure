@@ -234,4 +234,59 @@ ECONOMY_CONFIG: list[dict[str, Any]] = [
         "value_json": 90,
         "description": "No heartbeat for this long -> node marked offline (M3 scheduler)",
     },
+    # ---- M3: live environment used by the decay engine (demo-tunable) ----
+    {
+        "key": "env_temp_c",
+        "value_json": 24.0,
+        "description": "Current ambient temperature feeding F_temp in the decay tick",
+    },
+    {
+        "key": "env_humidity_pct",
+        "value_json": 65.0,
+        "description": "Current ambient humidity feeding F_humidity in the decay tick",
+    },
+    # ---- M3: scheduler cadence ----
+    {
+        "key": "entropy_snapshot_minutes",
+        "value_json": 1,
+        "description": "Interval for writing an entropy_snapshots row + broadcasting",
+    },
+    {
+        "key": "purity_prompt_tick_minutes",
+        "value_json": 1,
+        "description": "How often the fleet-learning purity-prompt job runs",
+    },
+    {
+        "key": "node_warning_health",
+        "value_json": 50.0,
+        "description": "Node avg health below this counts as a 'warning' node (bounties/UI)",
+    },
+    # ---- M3: daily bounty templates (config-driven; demo-tunable) ----
+    {
+        "key": "bounty_templates",
+        "value_json": [
+            {
+                "code": "daily_rescue",
+                "type": "rescue_count",
+                "target": 3,
+                "description": "Salvage 3 meals today",
+                "reward": {"protein": 25, "carbs": 25, "xp": 60},
+            },
+            {
+                "code": "spoiled_hero",
+                "type": "rescue_spoiled",
+                "target": 1,
+                "description": "Cleanly salvage 1 spoiled (biotoxin) meal",
+                "reward": {"lipids": 20, "xp": 90},
+            },
+            {
+                "code": "warning_clear",
+                "type": "rescue_warning",
+                "target": 2,
+                "description": "Rescue 2 meals from warning-state nodes",
+                "reward": {"carbs": 30, "xp": 50},
+            },
+        ],
+        "description": "Templates the daily bounty generator instantiates each day",
+    },
 ]
