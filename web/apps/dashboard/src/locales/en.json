@@ -1,0 +1,28 @@
+{
+  "header": {
+    "title": "GLITCH SALVAGE // ESG WAR ROOM",
+    "subtitle": "campus surplus-food redistribution · fleet learning",
+    "live": "LIVE · auto-refresh 8s"
+  },
+  "kpi": {
+    "co2": "CO₂ averted",
+    "cost": "Cost recovered",
+    "meals": "Meals rescued",
+    "kg": "kg",
+    "mealsUnit": "meals"
+  },
+  "entropy": { "title": "Total Entropy // 8-day trace" },
+  "topology": { "title": "Network Topology", "online": "online" },
+  "fleet": {
+    "title": "Fleet Model Accuracy",
+    "caption": "Purity ratings ≥ 4★ as fleet-learning ground truth"
+  },
+  "leaderboard": {
+    "title": "Operator Leaderboard",
+    "operator": "operator",
+    "lvl": "lvl",
+    "xp": "xp"
+  },
+  "feed": { "title": "Live Salvage Feed", "empty": "no salvage logged yet…" },
+  "lang": { "toggle": "中文" }
+}

@@ -1,18 +1,20 @@
+import { useTranslation } from 'react-i18next';
 import { useLeaderboard } from '../api';
 
 export function Leaderboard() {
+  const { t } = useTranslation();
   const { data = [] } = useLeaderboard();
   return (
     <div className="panel flex flex-col p-4">
-      <span className="panel-title mb-2">Operator Leaderboard</span>
+      <span className="panel-title mb-2">{t('leaderboard.title')}</span>
       <div className="flex-1 overflow-y-auto">
         <table className="w-full text-xs">
           <thead className="text-neon-cyan/50">
             <tr>
               <th className="text-left font-normal">#</th>
-              <th className="text-left font-normal">operator</th>
-              <th className="text-right font-normal">lvl</th>
-              <th className="text-right font-normal">xp</th>
+              <th className="text-left font-normal">{t('leaderboard.operator')}</th>
+              <th className="text-right font-normal">{t('leaderboard.lvl')}</th>
+              <th className="text-right font-normal">{t('leaderboard.xp')}</th>
             </tr>
           </thead>
           <tbody>

@@ -1,0 +1,28 @@
+{
+  "header": {
+    "title": "破圖回收 // ESG 戰情室",
+    "subtitle": "校園剩食再分配 · 車隊學習",
+    "live": "即時 · 每 8 秒刷新"
+  },
+  "kpi": {
+    "co2": "減碳量",
+    "cost": "節省金額",
+    "meals": "救援餐數",
+    "kg": "公斤",
+    "mealsUnit": "餐"
+  },
+  "entropy": { "title": "總熵值 // 8 天軌跡" },
+  "topology": { "title": "網路拓樸", "online": "上線" },
+  "fleet": {
+    "title": "車隊模型準確度",
+    "caption": "純度評分 ≥ 4★ 作為車隊學習標註"
+  },
+  "leaderboard": {
+    "title": "指揮官排行榜",
+    "operator": "指揮官",
+    "lvl": "等級",
+    "xp": "經驗"
+  },
+  "feed": { "title": "即時救援動態", "empty": "尚無救援紀錄…" },
+  "lang": { "toggle": "EN" }
+}

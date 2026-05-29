@@ -1,14 +1,16 @@
 import { PolarAngleAxis, RadialBar, RadialBarChart, ResponsiveContainer } from 'recharts';
+import { useTranslation } from 'react-i18next';
 import { useFleet } from '../api';
 
 export function FleetGauge() {
+  const { t } = useTranslation();
   const { data } = useFleet();
   const pct = Math.round((data?.accuracy ?? 0) * 100);
   const chart = [{ name: 'accuracy', value: pct, fill: '#39ff14' }];
 
   return (
     <div className="panel flex flex-col items-center p-4">
-      <span className="panel-title self-start">Fleet Model Accuracy</span>
+      <span className="panel-title self-start">{t('fleet.title')}</span>
       <div className="relative h-40 w-40">
         <ResponsiveContainer width="100%" height="100%">
           <RadialBarChart
@@ -27,9 +29,7 @@ export function FleetGauge() {
           <span className="text-[10px] text-neon-cyan/60">n={data?.sample_size ?? 0}</span>
         </div>
       </div>
-      <p className="mt-2 text-center text-[10px] text-neon-cyan/50">
-        Purity ratings ≥ 4★ as fleet-learning ground truth
-      </p>
+      <p className="mt-2 text-center text-[10px] text-neon-cyan/50">{t('fleet.caption')}</p>
     </div>
   );
 }

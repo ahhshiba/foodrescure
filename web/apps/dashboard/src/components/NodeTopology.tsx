@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useNodes } from '../api';
 
 function healthColor(h: number): string {
@@ -7,15 +8,16 @@ function healthColor(h: number): string {
 }
 
 export function NodeTopology() {
+  const { t } = useTranslation();
   const { data: nodes = [] } = useNodes();
   const online = nodes.filter((n) => n.status === 'online').length;
 
   return (
     <div className="panel flex flex-col p-4">
       <div className="mb-3 flex items-center justify-between">
-        <span className="panel-title">Network Topology</span>
+        <span className="panel-title">{t('topology.title')}</span>
         <span className="text-xs text-neon-cyan/70">
-          {online}/{nodes.length} online
+          {online}/{nodes.length} {t('topology.online')}
         </span>
       </div>
       <div className="grid flex-1 grid-cols-2 gap-3">
