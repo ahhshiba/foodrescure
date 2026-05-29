@@ -9,14 +9,19 @@ from sqlalchemy.ext.asyncio import (
     async_sessionmaker,
     create_async_engine,
 )
+from sqlalchemy.pool import NullPool
 
 from app.config import settings
 
-engine = create_async_engine(
-    settings.database_url,
-    echo=False,
-    pool_pre_ping=True,  # transparently recover from dropped DB connections
-)
+# Under pytest each test runs in its own event loop; a pooled asyncpg connection
+# from a prior loop raises "attached to a different loop". NullPool avoids reuse.
+_engine_kwargs: dict = {"echo": False}
+if settings.app_env == "test":
+    _engine_kwargs["poolclass"] = NullPool
+else:
+    _engine_kwargs["pool_pre_ping"] = True  # transparently recover dropped connections
+
+engine = create_async_engine(settings.database_url, **_engine_kwargs)
 
 AsyncSessionLocal = async_sessionmaker(
     bind=engine,

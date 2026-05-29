@@ -65,6 +65,9 @@ async def dev_seed() -> tuple[int, str]:
                 username=TEST_USERNAME,
                 email="neo@glitch.test",
                 password_hash=hash_password("password123"),
+                protein=200.0,
+                carbs=200.0,
+                lipids=200.0,
             )
             session.add(user)
             await session.flush()

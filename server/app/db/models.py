@@ -44,6 +44,12 @@ class User(Base, TimestampMixin):
     password_hash: Mapped[str] = mapped_column(String(255))
     level: Mapped[int] = mapped_column(Integer, default=1, server_default="1")
     xp: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
+    # Biomaterial running balance. §5.4 omits where /inventory's materials live;
+    # storing the balance on the user is the minimal way to satisfy the
+    # inventory + nanos-upgrade (deduct materials) requirements.
+    protein: Mapped[float] = mapped_column(Float, default=0.0, server_default="0")
+    carbs: Mapped[float] = mapped_column(Float, default=0.0, server_default="0")
+    lipids: Mapped[float] = mapped_column(Float, default=0.0, server_default="0")
 
     cards: Mapped[list[Card]] = relationship(back_populates="user")
     nanos: Mapped[list[NanosInventory]] = relationship(back_populates="user")

@@ -227,6 +227,9 @@ class MqttBridge:
 
             user = await session.get(User, txn.user_id)
             if user is not None:
+                user.protein += result.gains["protein"]
+                user.carbs += result.gains["carbs"]
+                user.lipids += result.gains["lipids"]
                 user.xp += result.xp
                 user.level = economy.level_for_xp(
                     user.xp,
