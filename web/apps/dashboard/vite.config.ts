@@ -2,7 +2,9 @@ import react from '@vitejs/plugin-react';
 import { fileURLToPath, URL } from 'node:url';
 import { defineConfig } from 'vite';
 
-export default defineConfig({
+// Served by nginx under /dashboard/ in production; root path in dev.
+export default defineConfig(({ command }) => ({
+  base: command === 'build' ? '/dashboard/' : '/',
   plugins: [react()],
   resolve: {
     alias: {
@@ -17,4 +19,4 @@ export default defineConfig({
       '/api': { target: 'http://localhost:8000', changeOrigin: true },
     },
   },
-});
+}));

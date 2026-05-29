@@ -1,0 +1,9 @@
+# Keep build contexts lean (web image build uses repo root as context).
+**/node_modules
+**/dist
+**/.venv
+**/__pycache__
+.git
+.vscode
+server/.venv
+*.md
