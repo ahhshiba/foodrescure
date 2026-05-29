@@ -64,6 +64,27 @@ npm run lint
 npm run typecheck
 ```
 
+## Frontend — UI1 player game (`web/apps/game`)
+
+Cyberpunk React app: entropy-driven map glitch, Lidar ping, Nanos workbench,
+unlock/credit animations, auto-reconnecting WebSocket. Dev server proxies
+`/api` + `/ws` to the backend on `:8000`.
+
+```powershell
+cd web
+npm install
+npm run dev          # http://localhost:5173  (game)
+# other gates:
+npm run typecheck    # contracts + game
+npm run lint
+npm test             # contracts + game store
+npm run build        # production bundle (served by nginx in M7)
+```
+
+Log in by registering a new operator, or use the dev seed account
+(`neo` / `password123`). Then drive `sim_edge.py` to see the unlock pulse,
+Nanos swarm, resource credit, entropy glitch, bounty + purity events live.
+
 ## `sim_edge.py` (simulated Raspberry Pi)
 
 Drives a full round (swipe → unlock → status → credit) against the broker so the
@@ -107,6 +128,6 @@ contract; the backend needs no changes.
 - **M2** ✅ MQTT bridge + WS manager + deconstruct + `sim_edge.py` (full flow verified).
 - **M3** ✅ decay engine + entropy snapshots + daily bounties + fleet-learning purity prompts on APScheduler.
 - **M4** ✅ full REST API (auth, account, nodes, inventory, nanos upgrade, bounties, feedback, ESG/stats) + integration tests.
-- M5 — UI1 game frontend.
+- **M5** ✅ UI1 game frontend — map glitch, Lidar ping, Nanos workbench, unlock/credit animations, auto-reconnect WS.
 - M6 — UI2 ESG dashboard + mock data generator.
 - M7 — polish, healthchecks, full lint/typecheck/test green.
