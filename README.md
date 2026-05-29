@@ -188,3 +188,5 @@ glitch-salvage/
     ├── packages/contracts/     # @glitch/contracts — TS mirror of backend contracts
     └── apps/{game,dashboard}/  # UI1 player game · UI2 ESG war room
 ```
+#   f o o d r e s c u r e  
+ 
