@@ -39,11 +39,11 @@ function Model({ isPlaying, modelUrl }: { isPlaying: boolean, modelUrl: string }
     if (groupRef.current) {
       if (isPlaying) {
         groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 15) * 0.5 - 1.5;
-        const scale = 1 + Math.sin(state.clock.elapsedTime * 15) * 0.1;
+        const scale = (1 + Math.sin(state.clock.elapsedTime * 15) * 0.1) * 0.92;
         groupRef.current.scale.set(scale, scale, scale);
       } else {
         groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 2) * 0.1 - 1.5;
-        groupRef.current.scale.set(1, 1, 1);
+        groupRef.current.scale.set(0.92, 0.92, 0.92);
       }
       groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime) * 0.2;
     }

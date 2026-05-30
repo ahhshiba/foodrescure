@@ -244,6 +244,14 @@ export function NanosInteractZone() {
           <div className="absolute inset-0 w-full h-full z-10 pointer-events-auto">
              <R3D isPlaying={isPlaying} modelUrl={selectedModel} />
           </div>
+          
+          {/* Explicit Model Selection Buttons */}
+          <div className="absolute top-3 left-0 right-0 flex justify-center gap-3 z-20 pointer-events-auto">
+            <button onClick={() => setSelectedModel('/robot.glb')} className={`px-3 py-1 text-[10px] font-bold rounded-full border shadow-sm transition-all ${selectedModel === '/robot.glb' ? 'bg-[#f4f8f4] border-zen-primary text-zen-primary' : 'bg-white border-zen-border text-zen-text hover:bg-gray-50'}`}>🤖 Robot</button>
+            <button onClick={() => setSelectedModel('/flamingo.glb')} className={`px-3 py-1 text-[10px] font-bold rounded-full border shadow-sm transition-all ${selectedModel === '/flamingo.glb' ? 'bg-[#f4f8f4] border-zen-primary text-zen-primary' : 'bg-white border-zen-border text-zen-text hover:bg-gray-50'}`}>🦩 Flamingo</button>
+            <button onClick={() => setSelectedModel('/parrot.glb')} className={`px-3 py-1 text-[10px] font-bold rounded-full border shadow-sm transition-all ${selectedModel === '/parrot.glb' ? 'bg-[#f4f8f4] border-zen-primary text-zen-primary' : 'bg-white border-zen-border text-zen-text hover:bg-gray-50'}`}>🦜 Parrot</button>
+          </div>
+
           <div className="absolute bottom-4 left-0 right-0 flex justify-center z-20 pointer-events-auto">
             <button
               onMouseDown={startRecording}
