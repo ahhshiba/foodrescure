@@ -9,7 +9,7 @@ function Stat({ label, value, color }: { label: string; value: number; color: st
   return (
     <div className="flex flex-col items-center md:items-end leading-none">
       <span className={`text-sm md:text-lg font-bold ${color}`}>{Math.round(value)}</span>
-      <span className="text-[8px] md:text-[10px] uppercase tracking-widest text-neon-cyan/70">{label}</span>
+      <span className="text-[8px] md:text-[10px] text-zen-light mt-1">{label}</span>
     </div>
   );
 }
@@ -29,50 +29,46 @@ export function Hud() {
 
   return (
     <header className="panel flex flex-col md:flex-row items-center justify-between p-3 md:px-5 md:py-3 gap-2 md:gap-6 shrink-0">
-      <div className="flex items-center gap-3">
-        {/* Character Avatar */}
+      <div className="flex items-center gap-4">
+        {/* Minimal Avatar */}
         <div className="relative shrink-0">
-          <div className="absolute inset-0 animate-pulse rounded-full bg-neon-cyan/20 blur-sm"></div>
-          <div className="relative h-10 w-10 md:h-12 md:w-12 overflow-hidden rounded-full border-2 border-neon-cyan bg-black/80 shadow-[0_0_10px_rgba(0,255,255,0.5)]">
-            <svg viewBox="0 0 100 100" className="h-full w-full text-neon-cyan opacity-80" fill="currentColor">
+          <div className="h-10 w-10 md:h-12 md:w-12 overflow-hidden rounded-full border border-zen-border bg-[#f8f6f2] flex items-center justify-center">
+            <svg viewBox="0 0 100 100" className="h-8 w-8 text-zen-light" fill="currentColor">
               <path d="M50 55c-15 0-25-10-25-25s10-25 25-25 25 10 25 25-10 25-25 25zm0 5c18 0 35 15 35 40H15c0-25 17-40 35-40z" />
             </svg>
-            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent"></div>
-            {/* Holographic scanline effect overlay */}
-            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,255,255,0.1)_50%)] bg-[length:100%_4px]"></div>
           </div>
           {/* Level Badge */}
-          <div className="absolute -bottom-1 -right-1 flex h-4 w-4 md:h-5 md:w-5 items-center justify-center rounded-full border border-black bg-neon-magenta text-[8px] md:text-[9px] font-bold text-black shadow-magenta">
+          <div className="absolute -bottom-1 -right-1 flex h-4 w-4 md:h-5 md:w-5 items-center justify-center rounded-full border border-white bg-zen-accent text-[8px] md:text-[9px] font-bold text-white">
             {me.data?.level ?? 1}
           </div>
         </div>
 
         <div className="text-left">
-          <div className="glitch-text text-sm md:text-lg font-bold text-neon-green tracking-wider drop-shadow-md">GLITCH SALVAGE</div>
-          <div className="text-[9px] md:text-[10px] uppercase tracking-[0.2em] md:tracking-[0.3em] text-neon-cyan drop-shadow-[0_0_2px_rgba(0,255,255,0.8)] mt-0.5">
-            {t('hud.operator')}: <span className="text-white font-bold">{me.data?.username ?? '...'}</span>
+          <div className="text-sm md:text-lg font-bold text-zen-text tracking-wide">GLITCH SALVAGE</div>
+          <div className="text-[10px] md:text-[11px] text-zen-light mt-0.5">
+            {t('hud.operator')}: <span className="text-zen-text font-bold">{me.data?.username ?? '...'}</span>
           </div>
-          <div className="text-[8px] md:text-[9px] uppercase tracking-widest text-neon-magenta mt-0.5 opacity-80">
+          <div className="text-[9px] md:text-[10px] text-zen-primary mt-0.5 opacity-80">
             {me.data?.xp ?? 0} {t('common.xp')}
           </div>
         </div>
       </div>
 
       <div className="flex flex-wrap items-center justify-center md:justify-end gap-x-4 gap-y-2 md:gap-6 w-full md:w-auto">
-        <Stat label={t('common.protein')} value={protein} color="text-neon-green" />
-        <Stat label={t('common.carbs')} value={carbs} color="text-neon-cyan" />
-        <Stat label={t('common.lipids')} value={lipids} color="text-neon-magenta" />
+        <Stat label={t('common.protein')} value={protein} color="text-zen-accent" />
+        <Stat label={t('common.carbs')} value={carbs} color="text-zen-primary" />
+        <Stat label={t('common.lipids')} value={lipids} color="text-zen-alert" />
         <div className="flex flex-col items-center md:items-end leading-none">
-          <span className="text-sm md:text-lg font-bold text-neon-magenta">{(glitch * 100).toFixed(0)}%</span>
-          <span className="text-[8px] md:text-[10px] uppercase tracking-widest text-neon-cyan/70">
+          <span className="text-sm md:text-lg font-bold text-zen-alert">{(glitch * 100).toFixed(0)}%</span>
+          <span className="text-[8px] md:text-[10px] text-zen-light mt-1">
             {t('common.entropy')} {totalEntropy.toFixed(1)}
           </span>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center justify-center md:justify-end gap-2 mt-1 md:mt-0 w-full md:w-auto">
           {/* PI_LINK STATUS BOX */}
-          <div className="flex items-center gap-2 rounded-none border border-neon-green/80 bg-black/60 px-2 py-0.5 md:px-3 md:py-1 shadow-[0_0_8px_rgba(57,255,20,0.3)]">
-            <div className="h-2 w-2 rounded-full bg-neon-green animate-pulse"></div>
-            <span className="text-[9px] md:text-[11px] font-mono text-neon-green tracking-wider whitespace-nowrap">
+          <div className="flex items-center gap-2 rounded border border-zen-border bg-[#f8f6f2] px-2 py-0.5 md:px-3 md:py-1">
+            <div className="h-2 w-2 rounded-full bg-zen-accent animate-pulse"></div>
+            <span className="text-[9px] md:text-[11px] font-mono text-zen-accent whitespace-nowrap">
               PI_LINK: ACTIVE <span className="opacity-70 ml-1">MS:24</span>
             </span>
           </div>
@@ -90,13 +86,13 @@ export function Hud() {
               }
             }}
             disabled={bindCard.isPending}
-            className="btn-cyber btn-cyber-cyan rounded-none border border-neon-yellow/80 px-2 py-0.5 md:px-3 md:py-1 text-[10px] md:text-xs text-neon-yellow disabled:opacity-50 flex items-center gap-1 font-bold shadow-[0_0_10px_rgba(255,255,0,0.3)]"
+            className="rounded border border-zen-border px-2 py-1 md:px-3 text-[10px] md:text-xs text-zen-text disabled:opacity-50 flex items-center gap-1 font-bold hover:bg-[#f8f6f2] bg-white shadow-sm"
           >
             💳 {bindCard.isPending ? '綁定中...' : '綁定實體卡'}
           </button>
           <button
             onClick={logout}
-            className="btn-cyber rounded-none border border-neon-magenta/50 px-2 py-0.5 md:px-3 md:py-1 text-[10px] md:text-xs text-neon-magenta hover:bg-neon-magenta/10 shadow-[0_0_5px_rgba(255,0,255,0.3)]"
+            className="rounded border border-zen-alert/30 px-2 py-1 md:px-3 text-[10px] md:text-xs text-zen-alert hover:bg-[#fae6e5] bg-white shadow-sm font-medium"
           >
             {t('hud.eject')}
           </button>

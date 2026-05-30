@@ -23,62 +23,62 @@ export function ReservationManager() {
   const uid = me.data?.username || 'UNKNOWN';
 
   return (
-    <div className="panel flex flex-col rounded-none p-0 border border-neon-cyan/40 shadow-[0_0_15px_rgba(0,255,255,0.05)] relative flex-1 min-h-[350px]">
+    <div className="panel flex flex-col p-0 flex-1 min-h-[350px]">
       {/* Header */}
-      <div className="bg-neon-cyan/10 border-b border-neon-cyan/40 p-2">
-        <h2 className="text-sm font-bold text-neon-cyan tracking-widest uppercase flex items-center gap-2">
-          <div className="w-1.5 h-4 bg-neon-cyan"></div>
+      <div className="bg-[#fcfaf8] border-b border-zen-border p-3">
+        <h2 className="text-sm font-bold text-zen-text tracking-wide flex items-center gap-2">
+          <div className="w-1.5 h-4 bg-zen-primary rounded-sm"></div>
           RESERVATION_MGMT
         </h2>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-3 custom-scrollbar flex flex-col gap-4">
+      <div className="flex-1 overflow-y-auto p-3 custom-scrollbar flex flex-col gap-4 bg-white">
         
         {/* BOOKED List */}
         <div className="flex flex-col gap-1">
-          <h3 className="text-[10px] text-neon-green font-bold tracking-widest border-b border-neon-green/30 pb-1 mb-2 uppercase">
-            [ ACTIVE_BOOKINGS ]
+          <h3 className="text-[10px] text-zen-text font-bold tracking-wide border-b border-zen-border pb-1 mb-2 uppercase">
+            ACTIVE BOOKINGS
           </h3>
           
           {isLoading ? (
-            <div className="text-xs text-neon-green/60 font-mono data-matrix">SCANNING...</div>
+            <div className="text-xs text-zen-light font-medium">Loading...</div>
           ) : bookedList.length === 0 ? (
-            <div className="text-[10px] text-neon-green/40 italic font-mono border border-dashed border-neon-green/20 p-2">
-              NO ACTIVE RESERVATIONS.
+            <div className="text-[10px] text-zen-light italic border border-dashed border-zen-border p-3 rounded-lg text-center">
+              No active reservations.
             </div>
           ) : (
             bookedList.map((f, i) => (
-              <div key={i} className="flex flex-row items-center justify-between rounded-none border-l-2 border-neon-green bg-black/40 p-2 mb-1 shadow-[inset_0_0_10px_rgba(57,255,20,0.1)] hover:bg-neon-green/5 transition-colors">
+              <div key={i} className="flex flex-row items-center justify-between rounded-lg border border-zen-border bg-[#fdfbf7] p-3 mb-2 shadow-sm hover:bg-[#f8f6f2] transition-colors">
                 
                 {/* Left Side: Info */}
                 <div className="flex flex-col gap-0.5 w-full">
-                  <div className="text-[11px] text-neon-green font-bold tracking-wider">
+                  <div className="text-[11px] text-zen-text font-bold">
                     Target // {f.node_id}
                   </div>
-                  <div className="text-[9px] text-white/70 font-mono">
-                    <span className="text-neon-yellow/90">Card {uid}</span> | 
+                  <div className="text-[10px] text-zen-light mt-1">
+                    <span className="font-medium text-zen-accent">User: {uid}</span> | 
                     Food: {i18n.language === 'zh-TW' && f.display_name_zh ? f.display_name_zh : f.food_class}
                   </div>
                   <button 
                     onClick={() => selectNode(f.node_id)}
-                    className="text-[8px] text-neon-cyan/80 hover:text-neon-cyan hover:underline text-left mt-1 w-fit uppercase"
+                    className="text-[10px] text-zen-primary hover:underline text-left mt-1.5 w-fit"
                   >
-                    &gt;&gt; LOCATE_ON_MAP
+                    Locate on Map →
                   </button>
                 </div>
 
                 {/* Right Side: Action (Fixed inline Cancel) */}
-                <div className="ml-2 shrink-0">
+                <div className="ml-3 shrink-0">
                   <button
                     disabled={cancelMutation.isPending}
                     onClick={() => {
-                      if (window.confirm('ABORT RESERVATION?')) {
+                      if (window.confirm('Cancel reservation?')) {
                         cancelMutation.mutate(f.node_id);
                       }
                     }}
-                    className="btn-cyber btn-cyber-red border border-red-500 bg-[#1a0505] px-3 py-1.5 text-[10px] font-bold text-red-400 tracking-widest uppercase rounded shadow-[0_0_8px_rgba(255,0,0,0.5)]"
+                    className="bg-[#fae6e5] text-zen-alert hover:bg-[#f5d0ce] rounded-md px-3 py-1.5 text-[10px] font-bold transition-colors"
                   >
-                    {cancelMutation.isPending ? '...' : '[ CANCEL ]'}
+                    {cancelMutation.isPending ? '...' : 'Cancel'}
                   </button>
                 </div>
 
@@ -88,13 +88,13 @@ export function ReservationManager() {
         </div>
 
         {/* CANCEL List */}
-        <div className="flex flex-col gap-1">
-          <h3 className="text-[10px] text-neon-magenta font-bold tracking-widest border-b border-neon-magenta/30 pb-1 mb-2 uppercase">
-            [ ABORTED_LOGS ]
+        <div className="flex flex-col gap-1 mt-4">
+          <h3 className="text-[10px] text-zen-light font-bold tracking-wide border-b border-zen-border pb-1 mb-2 uppercase">
+            CANCELLED LOGS
           </h3>
           {cancelList.map(c => (
-            <div key={c.id} className="text-[9px] text-neon-magenta/70 font-mono bg-black/30 p-1 border-l border-neon-magenta/30 pl-2">
-              <span className="opacity-50">[{c.time}]</span> ABORTED // {c.node_id} ({c.food_class})
+            <div key={c.id} className="text-[10px] text-zen-light bg-[#f8f6f2] p-2 rounded border border-zen-border/50 mb-1">
+              <span className="opacity-70 mr-2">[{c.time}]</span> Cancelled // {c.node_id} ({c.food_class})
             </div>
           ))}
         </div>
@@ -102,7 +102,7 @@ export function ReservationManager() {
       </div>
 
       {/* Embedded Pi Logs at the bottom of the panel */}
-      <div className="border-t-2 border-neon-cyan/40 bg-[#020406] p-2 flex flex-col shrink-0 h-40">
+      <div className="border-t border-zen-border bg-[#fdfbf7] p-2 flex flex-col shrink-0 h-40">
          <EventFeed />
       </div>
 

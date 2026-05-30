@@ -13,34 +13,36 @@ export function BountyPanel() {
   const claim = useClaimBounty();
 
   return (
-    <div className="panel flex flex-col rounded-none p-0 border border-neon-cyan/40 shadow-[0_0_15px_rgba(0,255,255,0.05)] relative flex-1">
-      <div className="bg-neon-cyan/10 border-b border-neon-cyan/40 p-2">
-        <h2 className="text-sm font-bold text-neon-green tracking-widest uppercase flex items-center gap-2">
-          <div className="w-1.5 h-4 bg-neon-green"></div>
+    <div className="panel flex flex-col p-0 flex-1">
+      <div className="bg-[#fcfaf8] border-b border-zen-border p-3">
+        <h2 className="text-sm font-bold text-zen-text tracking-wide flex items-center gap-2">
+          <div className="w-1.5 h-4 bg-zen-accent rounded-sm"></div>
           {t('bounty.title')}
         </h2>
       </div>
-      <div className="space-y-3 p-3 flex-1 overflow-y-auto custom-scrollbar">
+      <div className="space-y-3 p-3 flex-1 overflow-y-auto custom-scrollbar bg-white">
         {data?.map((b) => (
-          <div key={b.id} className="rounded border border-neon-green/20 bg-black/40 p-3">
-            <div className="mb-1 text-xs text-neon-cyan">{String(b.spec_json?.description ?? 'Directive')}</div>
-            <div className="mb-2 h-1.5 w-full rounded bg-black/60">
+          <div key={b.id} className="rounded-lg border border-zen-border bg-[#fdfbf7] p-3 shadow-sm">
+            <div className="mb-2 text-xs text-zen-text font-medium">
+              {b.spec_json?.code ? t(`bounty.tasks.${b.spec_json.code}`, String(b.spec_json?.description ?? 'Directive')) : String(b.spec_json?.description ?? 'Directive')}
+            </div>
+            <div className="mb-3 h-1.5 w-full rounded-full bg-gray-200">
               <div
-                className="h-full rounded bg-neon-cyan"
+                className="h-full rounded-full bg-zen-accent transition-all duration-500 ease-out"
                 style={{ width: `${progressPct(b)}%` }}
               />
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-[10px] text-neon-cyan/60">
+              <span className="text-[10px] text-zen-light font-mono">
                 {b.progress}/{String(b.spec_json?.target ?? 1)}
               </span>
               {b.claimed ? (
-                <span className="text-[10px] text-neon-green/70">{t('bounty.claimed')}</span>
+                <span className="text-[10px] text-zen-accent font-bold">{t('bounty.claimed')}</span>
               ) : (
                 <button
                   disabled={!b.completed || claim.isPending}
                   onClick={() => claim.mutate(b.id)}
-                  className="rounded bg-neon-magenta/15 px-2 py-0.5 text-[10px] font-bold text-neon-magenta ring-1 ring-neon-magenta/50 enabled:hover:bg-neon-magenta/25 disabled:opacity-30"
+                  className="rounded-md bg-[#f4f6f4] px-3 py-1 text-[10px] font-bold text-zen-accent border border-[#e1e7e3] enabled:hover:bg-[#ebf0ec] disabled:opacity-50 transition-colors"
                 >
                   {t('bounty.claim')}
                 </button>
@@ -49,7 +51,7 @@ export function BountyPanel() {
           </div>
         ))}
         {data && data.length === 0 && (
-          <div className="text-xs text-neon-cyan/60">{t('bounty.empty')}</div>
+          <div className="text-xs text-zen-light text-center py-4">{t('bounty.empty')}</div>
         )}
       </div>
     </div>

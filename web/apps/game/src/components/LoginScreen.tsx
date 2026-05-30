@@ -32,19 +32,19 @@ export function LoginScreen() {
   };
 
   return (
-    <div className="crt flex h-full items-center justify-center">
-      <form onSubmit={submit} className="panel w-[360px] rounded-lg p-8 shadow-neon">
-        <div className="mb-1 flex items-center justify-between">
-          <h1 className="glitch-text text-2xl font-bold text-neon-green">GLITCH SALVAGE</h1>
+    <div className="flex h-full items-center justify-center p-4">
+      <form onSubmit={submit} className="panel w-[360px] rounded-2xl p-8 bg-white border border-zen-border shadow-sm">
+        <div className="mb-2 flex items-center justify-between">
+          <h1 className="text-2xl font-bold text-zen-text tracking-tight">Food Rescue</h1>
           <LanguageSwitcher />
         </div>
-        <p className="mb-6 text-xs uppercase tracking-[0.3em] text-neon-cyan">
+        <p className="mb-8 text-xs text-zen-light font-medium tracking-wide">
           {t('login.subtitle')}
         </p>
 
-        <label className="mb-1 block text-xs text-neon-cyan">{t('login.callsign')}</label>
+        <label className="mb-1.5 block text-xs font-medium text-zen-text">{t('login.callsign')}</label>
         <input
-          className="mb-3 w-full rounded border border-neon-green/40 bg-black/60 px-3 py-2 text-neon-green outline-none focus:border-neon-green"
+          className="mb-4 w-full rounded-lg border border-zen-border bg-[#fdfbf7] px-3 py-2 text-zen-text outline-none focus:border-zen-accent focus:ring-1 focus:ring-zen-accent transition-all"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           autoComplete="username"
@@ -52,9 +52,9 @@ export function LoginScreen() {
 
         {mode === 'register' && (
           <>
-            <label className="mb-1 block text-xs text-neon-cyan">{t('login.email')}</label>
+            <label className="mb-1.5 block text-xs font-medium text-zen-text">{t('login.email')}</label>
             <input
-              className="mb-3 w-full rounded border border-neon-green/40 bg-black/60 px-3 py-2 text-neon-green outline-none focus:border-neon-green"
+              className="mb-4 w-full rounded-lg border border-zen-border bg-[#fdfbf7] px-3 py-2 text-zen-text outline-none focus:border-zen-accent focus:ring-1 focus:ring-zen-accent transition-all"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               autoComplete="email"
@@ -62,21 +62,21 @@ export function LoginScreen() {
           </>
         )}
 
-        <label className="mb-1 block text-xs text-neon-cyan">{t('login.passphrase')}</label>
+        <label className="mb-1.5 block text-xs font-medium text-zen-text">{t('login.passphrase')}</label>
         <input
           type="password"
-          className="mb-4 w-full rounded border border-neon-green/40 bg-black/60 px-3 py-2 text-neon-green outline-none focus:border-neon-green"
+          className="mb-6 w-full rounded-lg border border-zen-border bg-[#fdfbf7] px-3 py-2 text-zen-text outline-none focus:border-zen-accent focus:ring-1 focus:ring-zen-accent transition-all"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
         />
 
-        {error && <p className="mb-3 text-xs text-neon-magenta">⚠ {error}</p>}
+        {error && <p className="mb-4 text-xs text-zen-alert font-medium">{error}</p>}
 
         <button
           type="submit"
           disabled={busy}
-          className="w-full rounded bg-neon-green/20 py-2 font-bold text-neon-green ring-1 ring-neon-green transition hover:bg-neon-green/30 disabled:opacity-50"
+          className="w-full rounded-lg bg-zen-primary py-2.5 font-bold text-white shadow-sm hover:bg-zen-primary/90 transition-colors disabled:opacity-50"
         >
           {busy ? '...' : mode === 'login' ? t('login.jackIn') : t('login.register')}
         </button>
@@ -84,7 +84,7 @@ export function LoginScreen() {
         <button
           type="button"
           onClick={() => setMode(mode === 'login' ? 'register' : 'login')}
-          className="mt-4 w-full text-center text-xs text-neon-cyan underline-offset-2 hover:underline"
+          className="mt-6 w-full text-center text-xs font-medium text-zen-light hover:text-zen-text transition-colors"
         >
           {mode === 'login' ? t('login.toRegister') : t('login.toLogin')}
         </button>

@@ -4,22 +4,25 @@ export default {
   theme: {
     extend: {
       colors: {
-        // UI1 high-brightness tech palette (brief §5).
-        neon: {
-          green: '#39ff14',
-          magenta: '#FF003C',
-          cyan: '#00F0FF',
-          blue: '#1f8fff',
+        zen: {
+          bg: '#fcfaf8',
+          panel: '#ffffff',
+          text: '#4a4a4a',
+          light: '#8c8c8c',
+          border: '#eae5de',
+          accent: '#8ba192',
+          alert: '#c98a87',
+          primary: '#b59e86',
         },
-        void: '#0F172A',
-        panel: '#0b1322',
       },
       fontFamily: {
+        sans: ['"Inter"', '"Noto Sans TC"', 'sans-serif'],
+        serif: ['"Noto Serif TC"', 'serif'],
         mono: ['"JetBrains Mono"', '"Fira Code"', 'Consolas', 'monospace'],
       },
       boxShadow: {
-        neon: '0 0 8px rgba(57,255,20,0.7), 0 0 16px rgba(57,255,20,0.4)',
-        magenta: '0 0 8px rgba(255,42,109,0.7), 0 0 18px rgba(255,42,109,0.4)',
+        zen: '0 4px 20px rgba(0, 0, 0, 0.03)',
+        'zen-hover': '0 6px 24px rgba(0, 0, 0, 0.06)',
       },
     },
   },

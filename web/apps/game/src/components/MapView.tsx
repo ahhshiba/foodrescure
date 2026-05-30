@@ -27,8 +27,8 @@ export function MapView() {
       attributionControl: false,
     });
 
-    // Use CartoDB Dark Matter tiles for cyberpunk aesthetic
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    // Use CartoDB Positron tiles for light minimalist aesthetic
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
       maxZoom: 20,
     }).addTo(map);
 
@@ -67,23 +67,23 @@ export function MapView() {
 
       // Color coding representing node warning level or offline status
       const colorClass = !online
-        ? 'bg-neon-magenta shadow-magenta'
+        ? 'bg-zen-alert shadow-sm'
         : warning
-          ? 'bg-amber-400 animate-pulse shadow-[0_0_8px_#fbbf24,0_0_16px_#fbbf24]'
-          : 'bg-neon-green shadow-neon';
+          ? 'bg-amber-400 animate-pulse shadow-md'
+          : 'bg-zen-accent shadow-sm';
 
-      const textColor = !online ? 'text-neon-magenta' : warning ? 'text-amber-400' : 'text-neon-green';
+      const textColor = !online ? 'text-zen-alert' : warning ? 'text-amber-500' : 'text-zen-primary';
 
       const htmlContent = `
         <div class="relative -translate-x-1/2 -translate-y-1/2 text-center" style="width: 120px; outline: none !important;">
-          <div class="mx-auto h-4 w-4 rounded-full ${colorClass} border-2 border-void transition-all duration-300"></div>
-          <div class="mt-1 text-[10px] font-bold tracking-wider ${textColor} font-mono bg-panel/90 px-1 py-0.5 rounded inline-block border border-neon-cyan/20 select-none">${node.name}</div>
-          <div class="text-[9px] text-neon-cyan/90 font-mono select-none block drop-shadow-[0_1px_1px_#000]">${node.health_avg.toFixed(0)} HP · ${ent.toFixed(1)} E</div>
+          <div class="mx-auto h-4 w-4 rounded-full ${colorClass} border-2 border-white transition-all duration-300"></div>
+          <div class="mt-1 text-[10px] font-bold tracking-wide ${textColor} bg-white/90 px-1.5 py-0.5 rounded-md inline-block border border-zen-border shadow-sm select-none">${node.name}</div>
+          <div class="text-[9px] text-zen-light select-none block drop-shadow-sm bg-white/80 rounded px-1 mt-0.5 inline-block border border-zen-border/50">${node.health_avg.toFixed(0)} HP · ${ent.toFixed(1)} E</div>
         </div>
       `;
 
       const icon = L.divIcon({
-        className: 'custom-neon-marker',
+        className: 'custom-map-marker',
         html: htmlContent,
         iconSize: [120, 40],
         iconAnchor: [60, 20],
@@ -115,9 +115,9 @@ export function MapView() {
   }, [nodes, nodeEntropies, selectNode]);
 
   return (
-    <div className="panel relative h-full overflow-hidden rounded-lg">
-      <div ref={mapContainerRef} className="h-full w-full bg-void z-0" />
-      <div className="absolute left-3 top-2 text-[10px] uppercase tracking-[0.3em] text-neon-cyan/70 z-[1000] bg-panel/90 px-2 py-1 rounded border border-neon-cyan/30 pointer-events-none">
+    <div className="panel relative h-full overflow-hidden rounded-xl border-zen-border bg-white">
+      <div ref={mapContainerRef} className="h-full w-full z-0" />
+      <div className="absolute left-3 top-2 text-[10px] uppercase tracking-wide text-zen-text font-bold z-[1000] bg-white/90 px-2 py-1 rounded-md border border-zen-border shadow-sm pointer-events-none">
         {t('map.cityGrid', { count: nodes.length })}
       </div>
     </div>

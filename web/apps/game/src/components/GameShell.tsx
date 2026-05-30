@@ -24,7 +24,7 @@ export function GameShell() {
   }, [glitch]);
 
   return (
-    <div className="crt flex flex-col gap-4 p-4 min-h-screen">
+    <div className="flex flex-col gap-4 p-4 min-h-screen">
       <Hud />
 
       {/* Desktop view (visible >= md) */}
@@ -40,7 +40,7 @@ export function GameShell() {
         {/* Center Column */}
         <section className="col-span-6 flex flex-col gap-4">
           {/* Force MapView to have a fixed height so Leaflet renders properly and doesn't collapse */}
-          <div className="h-[450px] shadow-[0_0_20px_rgba(0,0,0,0.8)] border border-neon-cyan/40">
+          <div className="h-[450px] shadow-sm border border-zen-border rounded-xl overflow-hidden">
             <MapView />
           </div>
           <NodePanel />
@@ -87,37 +87,37 @@ export function GameShell() {
         )}
 
         {/* Mobile bottom tabs */}
-        <nav className="panel fixed bottom-0 left-0 right-0 z-50 flex h-14 items-center justify-around text-xs font-bold uppercase tracking-wider shadow-[0_-5px_15px_rgba(0,0,0,0.5)]">
+        <nav className="panel fixed bottom-0 left-0 right-0 z-50 flex h-14 items-center justify-around text-xs font-bold uppercase tracking-wide bg-white border-t border-zen-border">
           <button
             onClick={() => setActiveTab('map')}
             className={`flex flex-col items-center justify-center gap-1 w-full h-full transition-all ${
               activeTab === 'map'
-                ? 'text-neon-green border-t-2 border-neon-green bg-neon-green/10'
-                : 'text-neon-cyan/50 hover:text-neon-cyan/80'
+                ? 'text-zen-primary border-t-2 border-zen-primary bg-[#f4f6f4]'
+                : 'text-zen-light hover:text-zen-text'
             }`}
           >
             <span className="text-base">🗺️</span>
-            <span>MAP_CTX</span>
+            <span>MAP</span>
           </button>
-          <div className="w-[1px] h-6 bg-neon-cyan/20" />
+          <div className="w-[1px] h-6 bg-zen-border" />
           <button
             onClick={() => setActiveTab('workbench')}
             className={`flex flex-col items-center justify-center gap-1 w-full h-full transition-all ${
               activeTab === 'workbench'
-                ? 'text-neon-magenta border-t-2 border-neon-magenta bg-neon-magenta/10'
-                : 'text-neon-cyan/50 hover:text-neon-cyan/80'
+                ? 'text-zen-accent border-t-2 border-zen-accent bg-[#f8f6f2]'
+                : 'text-zen-light hover:text-zen-text'
             }`}
           >
             <span className="text-base">⚙️</span>
-            <span>NANOS_SYS</span>
+            <span>SYSTEM</span>
           </button>
-          <div className="w-[1px] h-6 bg-neon-cyan/20" />
+          <div className="w-[1px] h-6 bg-zen-border" />
           <button
             onClick={() => setActiveTab('tasks')}
             className={`flex flex-col items-center justify-center gap-1 w-full h-full transition-all ${
               activeTab === 'tasks'
-                ? 'text-neon-cyan border-t-2 border-neon-cyan bg-neon-cyan/10'
-                : 'text-neon-cyan/50 hover:text-neon-cyan/80'
+                ? 'text-zen-text border-t-2 border-zen-text bg-[#f8f6f2]'
+                : 'text-zen-light hover:text-zen-text'
             }`}
           >
             <span className="text-base">📋</span>

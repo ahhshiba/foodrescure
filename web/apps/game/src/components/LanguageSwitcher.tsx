@@ -7,7 +7,7 @@ export function LanguageSwitcher() {
   return (
     <button
       onClick={() => setLanguage(next)}
-      className="rounded border border-neon-cyan/50 px-2 py-1 text-xs text-neon-cyan hover:bg-neon-cyan/10"
+      className="btn-cyber rounded border border-zen-border px-2 py-0.5 md:px-3 md:py-1 text-[10px] md:text-xs text-zen-text hover:bg-[#f8f6f2]"
       title="Language"
     >
       {t('lang.toggle')}

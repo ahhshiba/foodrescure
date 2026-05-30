@@ -20,10 +20,10 @@ export function PurityPrompt() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
-      <div className="panel w-[340px] rounded-lg p-6 text-center shadow-magenta">
-        <h2 className="glitch-text mb-1 text-lg font-bold text-neon-magenta">{t('purity.title')}</h2>
-        <p className="mb-4 text-xs text-neon-cyan">{t('purity.desc')}</p>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+      <div className="panel w-[340px] rounded-2xl p-8 text-center bg-white border-zen-border shadow-md">
+        <h2 className="mb-2 text-xl font-bold text-zen-text">{t('purity.title')}</h2>
+        <p className="mb-6 text-sm text-zen-light">{t('purity.desc')}</p>
         <div className="mb-4 flex justify-center gap-2">
           {[1, 2, 3, 4, 5].map((s) => (
             <button
@@ -32,8 +32,8 @@ export function PurityPrompt() {
               onMouseLeave={() => setHover(0)}
               onClick={() => send(s)}
               disabled={submit.isPending}
-              className={`text-3xl transition ${
-                s <= hover ? 'text-neon-green' : 'text-neon-green/30'
+              className={`text-4xl transition-colors ${
+                s <= hover ? 'text-amber-400' : 'text-[#eae5de]'
               }`}
             >
               ★
@@ -42,7 +42,7 @@ export function PurityPrompt() {
         </div>
         <button
           onClick={() => setPurity(null)}
-          className="text-[10px] text-neon-cyan/60 hover:underline"
+          className="text-xs text-zen-light hover:text-zen-text hover:underline transition-colors mt-2"
         >
           {t('purity.dismiss')}
         </button>

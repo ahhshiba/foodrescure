@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useInventory, useUpgradeNanos } from '../api/hooks';
+import { useTalkingTom } from '../hooks/useTalkingTom';
+import { R3D } from './R3D';
 
 interface NanoEntity {
   x: number;
@@ -27,6 +29,7 @@ export function NanosInteractZone() {
   const inv = useInventory();
   const upgrade = useUpgradeNanos();
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { isRecording, isPlaying, startRecording, stopRecording } = useTalkingTom();
 
   const nanosStats = inv.data?.nanos ?? [];
   const displayNanos = nanosStats.length > 0 ? nanosStats : [
@@ -52,9 +55,9 @@ export function NanosInteractZone() {
 
     // Initialize Entities
     const colors: Record<string, string> = {
-      crab: '#05d9e8',
-      spider: '#39ff14',
-      jellyfish: '#ff2a6d'
+      crab: '#d9a05b',     // warm muted orange
+      spider: '#7fb069',   // sage green
+      jellyfish: '#e68a8a' // soft rose
     };
 
     let entities: NanoEntity[] = [];
@@ -99,11 +102,11 @@ export function NanosInteractZone() {
     // Render loop
     let animationId: number;
     const render = () => {
-      ctx.fillStyle = '#050a0f'; // Dark background
+      ctx.fillStyle = '#fdfbf7'; // Zen background
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Draw grid/street context
-      ctx.strokeStyle = 'rgba(0, 255, 255, 0.05)';
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.05)';
       ctx.lineWidth = 1;
       for (let i = 0; i < canvas.width; i += 20) {
         ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke();
@@ -113,30 +116,30 @@ export function NanosInteractZone() {
       }
 
       // Draw Base / Player Terminal link
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.1)';
-      ctx.strokeStyle = 'rgba(0, 255, 255, 0.5)';
+      ctx.fillStyle = 'rgba(127, 176, 105, 0.1)';
+      ctx.strokeStyle = 'rgba(127, 176, 105, 0.3)';
       ctx.beginPath();
       ctx.arc(canvas.width / 2, canvas.height - 10, 40, Math.PI, 0);
       ctx.fill();
       ctx.stroke();
-      ctx.fillStyle = 'rgba(0, 255, 255, 0.8)';
-      ctx.font = '10px monospace';
+      ctx.fillStyle = '#7fb069';
+      ctx.font = '10px sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('BASE_LINK', canvas.width / 2, canvas.height - 5);
+      ctx.fillText('BASE', canvas.width / 2, canvas.height - 5);
 
       // Update and Draw Foods
       foods.forEach((f) => {
         if (f.gathered) return;
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = f.color;
+        ctx.shadowBlur = 4;
+        ctx.shadowColor = 'rgba(0,0,0,0.1)';
         ctx.fillStyle = f.color;
         ctx.beginPath();
         ctx.arc(f.x, f.y, 4, 0, Math.PI * 2);
         ctx.fill();
         ctx.shadowBlur = 0;
         
-        ctx.fillStyle = 'rgba(255,255,255,0.7)';
-        ctx.font = '8px monospace';
+        ctx.fillStyle = '#4a4a4a';
+        ctx.font = '8px sans-serif';
         ctx.fillText(f.type, f.x, f.y - 8);
       });
 
@@ -191,10 +194,12 @@ export function NanosInteractZone() {
         }
 
         // Draw Nano
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = n.color;
+        ctx.shadowBlur = 4;
+        ctx.shadowColor = 'rgba(0,0,0,0.1)';
         ctx.fillStyle = n.color;
-        ctx.fillRect(n.x - 2, n.y - 2, 4, 4);
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, 3, 0, Math.PI * 2);
+        ctx.fill();
         ctx.shadowBlur = 0;
 
         if (n.carrying) {
@@ -216,52 +221,63 @@ export function NanosInteractZone() {
   }, [displayNanos]);
 
   return (
-    <div className="panel flex h-full flex-col rounded-none p-0 border border-neon-magenta/40 shadow-[0_0_15px_rgba(255,0,255,0.1)] relative">
+    <div className="panel flex h-full flex-col p-0 border border-zen-border shadow-sm relative bg-white overflow-hidden">
       
       {/* Header */}
-      <div className="bg-neon-magenta/10 border-b border-neon-magenta/40 p-2 flex justify-between items-center z-10">
-        <h2 className="text-sm font-bold text-neon-magenta tracking-widest uppercase flex items-center gap-2">
-          <div className="w-1.5 h-4 bg-neon-magenta"></div>
-          NANOS_INTERACT_ZONE
+      <div className="bg-[#fcfaf8] border-b border-zen-border p-3 flex justify-between items-center z-10">
+        <h2 className="text-sm font-bold text-zen-text tracking-wide flex items-center gap-2">
+          <div className="w-1.5 h-4 bg-zen-primary rounded-sm"></div>
+          Assistants Activity
         </h2>
-        <span className="text-[9px] text-neon-cyan font-mono animate-pulse">SWARM_ACTIVE</span>
+        <span className="text-[10px] text-zen-accent font-medium">Active</span>
       </div>
 
       <div className="flex-1 relative w-full overflow-hidden flex flex-col">
         
-        {/* Canvas Game Area */}
-        <div className="flex-1 relative w-full border-b border-neon-cyan/20">
+        {/* Canvas Game Area & 3D Tom Overlay */}
+        <div className="flex-1 relative w-full border-b border-zen-border bg-[#fdfbf7]">
           <canvas 
             ref={canvasRef} 
-            className="absolute inset-0 w-full h-full block" 
-            style={{ imageRendering: 'pixelated' }}
+            className="absolute inset-0 w-full h-full block opacity-40"
           />
-          {/* Overlay scanlines */}
-          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,255,255,0.05)_50%)] bg-[length:100%_4px]"></div>
+          <div className="absolute inset-0 w-full h-full z-10 pointer-events-auto">
+             <R3D isPlaying={isPlaying} />
+          </div>
+          <div className="absolute bottom-4 left-0 right-0 flex justify-center z-20 pointer-events-auto">
+            <button
+              onMouseDown={startRecording}
+              onMouseUp={stopRecording}
+              onTouchStart={startRecording}
+              onTouchEnd={stopRecording}
+              className={`px-6 py-2 rounded-full font-bold text-sm shadow-lg transition-all transform hover:scale-105 active:scale-95 flex items-center gap-2 ${isRecording ? 'bg-[#c98a87] text-white animate-pulse' : 'bg-zen-primary text-white'}`}
+            >
+              {isRecording ? '🎤 Listening...' : '🎤 Hold to Talk'}
+            </button>
+          </div>
         </div>
 
         {/* Nano Status Panels Overlay */}
-        <div className="h-auto max-h-[140px] bg-[#020508] p-2 flex flex-col gap-1.5 overflow-y-auto custom-scrollbar shrink-0 z-20">
+        <div className="h-auto max-h-[140px] bg-white p-3 flex flex-col gap-2 overflow-y-auto custom-scrollbar shrink-0 z-20">
           {displayNanos.map((n) => (
-            <div key={n.nanos_type} className="flex items-center justify-between border-l-2 border-neon-cyan/40 bg-black/60 pl-2 pr-1 py-1 hover:bg-neon-cyan/5 transition-colors">
+            <div key={n.nanos_type} className="flex items-center justify-between border border-zen-border rounded-lg bg-[#fcfaf8] p-2 hover:bg-[#f8f6f2] transition-colors">
               <div className="flex flex-col">
                 <div className="flex items-center gap-2">
-                  <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${
-                    n.nanos_type === 'crab' ? 'bg-neon-cyan shadow-[0_0_5px_cyan]' :
-                    n.nanos_type === 'spider' ? 'bg-neon-green shadow-[0_0_5px_lime]' :
-                    'bg-neon-magenta shadow-[0_0_5px_magenta]'
+                  <div className={`w-2 h-2 rounded-full ${
+                    n.nanos_type === 'crab' ? 'bg-[#d9a05b]' :
+                    n.nanos_type === 'spider' ? 'bg-[#7fb069]' :
+                    'bg-[#e68a8a]'
                   }`}></div>
-                  <span className="text-[10px] font-bold text-white uppercase tracking-widest">{n.nanos_type}_UNIT</span>
+                  <span className="text-xs font-bold text-zen-text capitalize">{n.nanos_type}</span>
                 </div>
-                <span className="text-[8px] text-neon-cyan/70 font-mono mt-0.5 ml-3.5">LEVEL: {n.level} // EFFICACY: {Math.floor(100 + n.level * 15)}%</span>
+                <span className="text-[9px] text-zen-light mt-1 ml-4">Lv: {n.level} | Efficacy: {Math.floor(100 + n.level * 15)}%</span>
               </div>
               
               <button
                 onClick={() => upgrade.mutate(n.nanos_type)}
                 disabled={upgrade.isPending}
-                className="btn-cyber btn-cyber-cyan border border-amber-400/60 bg-amber-400/10 px-3 py-1 text-[9px] font-bold text-amber-400 uppercase tracking-widest hover:text-black hover:bg-amber-400 transition-colors"
+                className="px-3 py-1.5 text-xs font-bold text-zen-primary bg-[#f4f6f4] border border-[#e1e7e3] rounded-md hover:bg-[#ebf0ec] transition-colors"
               >
-                {upgrade.isPending ? 'UPLINK...' : '[ FEED ]'}
+                {upgrade.isPending ? '...' : 'Upgrade'}
               </button>
             </div>
           ))}

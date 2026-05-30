@@ -57,18 +57,18 @@ export function UnlockOverlay() {
         <div className="relative">
           <div className="pulse-ring absolute left-1/2 top-1/2 h-40 w-40 -translate-x-1/2 -translate-y-1/2" />
           <Swarm />
-          <div className="glitch-text text-center text-sm font-bold uppercase tracking-[0.3em] text-neon-blue">
-            nanos deployed // {unlockFx.nodeId}
+          <div className="text-center text-sm font-bold tracking-wide text-zen-text bg-white/80 px-3 py-1 rounded-full shadow-sm backdrop-blur-sm border border-zen-border">
+            Assistants deployed // {unlockFx.nodeId}
           </div>
         </div>
       )}
       {creditFx && (
-        <div className="credit-float absolute" style={{ top: '40%' }}>
-          <div className="text-center text-2xl font-bold text-neon-green drop-shadow-[0_0_8px_#39ff14]">
+        <div className="credit-float absolute flex flex-col items-center gap-1" style={{ top: '40%' }}>
+          <div className="text-center text-lg font-bold text-zen-primary bg-white/90 px-4 py-2 rounded-xl shadow-sm border border-zen-border">
             +{Math.round(creditFx.protein)}P +{Math.round(creditFx.carbs)}C +
             {Math.round(creditFx.lipids)}L
           </div>
-          <div className="text-center text-sm text-neon-cyan">+{creditFx.xp} XP</div>
+          <div className="text-center text-xs font-bold text-zen-text bg-white/90 px-3 py-1 rounded-lg shadow-sm border border-zen-border">+{creditFx.xp} XP</div>
         </div>
       )}
     </div>

@@ -32,12 +32,12 @@ export function DropOffButton() {
   };
 
   return (
-    <div className="pointer-events-auto fixed bottom-4 right-4 z-30 flex items-center gap-2">
+    <div className="pointer-events-auto fixed bottom-[80px] md:bottom-6 right-4 md:right-6 z-30 flex items-center gap-3">
       {thumb && (
         <img
           src={thumb}
           alt="drop-off"
-          className="h-10 w-10 rounded border border-neon-cyan/60 object-cover shadow-neon"
+          className="h-12 w-12 rounded-lg border border-zen-border object-cover shadow-sm bg-white"
         />
       )}
       <input
@@ -51,14 +51,13 @@ export function DropOffButton() {
       <button
         onClick={() => fileRef.current?.click()}
         disabled={salvage.isPending}
-        className="group relative flex items-center gap-2 overflow-hidden rounded-full bg-black/60 px-5 py-3 font-bold text-neon-magenta backdrop-blur-md transition-all hover:bg-neon-magenta/20 disabled:opacity-50 ring-1 ring-neon-magenta/50 hover:ring-neon-magenta shadow-[0_0_15px_rgba(255,0,255,0.3)] hover:shadow-[0_0_25px_rgba(255,0,255,0.6)]"
+        className="group relative flex items-center gap-2.5 overflow-hidden rounded-full bg-zen-accent px-6 py-3.5 font-bold text-white shadow-md transition-all hover:bg-zen-accent/90 disabled:opacity-50 ring-1 ring-black/5 hover:shadow-lg"
       >
-        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-r from-neon-magenta/0 via-neon-magenta/20 to-neon-magenta/0 opacity-0 transition-opacity group-hover:opacity-100" />
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="relative z-10 lucide lucide-camera">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="relative z-10 lucide lucide-camera">
           <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
           <circle cx="12" cy="13" r="3"/>
         </svg>
-        <span className="relative z-10 tracking-widest drop-shadow-md uppercase">{t('dropoff.button')}</span>
+        <span className="relative z-10 tracking-wide">{t('dropoff.button')}</span>
       </button>
     </div>
   );

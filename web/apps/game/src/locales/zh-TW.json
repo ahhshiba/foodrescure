@@ -8,18 +8,18 @@
     "entropy": "熵值"
   },
   "login": {
-    "subtitle": "霓虹盛宴 // 指揮官登入",
-    "callsign": "代號",
-    "email": "連線信箱",
-    "passphrase": "通行碼",
-    "jackIn": "接入",
+    "subtitle": "剩食救援 // 系統登入",
+    "callsign": "使用者名稱",
+    "email": "信箱",
+    "passphrase": "密碼",
+    "jackIn": "登入",
     "register": "註冊",
-    "toRegister": "還沒有機甲？註冊新指揮官",
-    "toLogin": "已是指揮官？接入",
-    "failed": "連線失敗"
+    "toRegister": "還沒有帳號？註冊新使用者",
+    "toLogin": "已經有帳號？登入",
+    "failed": "登入失敗"
   },
   "hud": {
-    "operator": "指揮官",
+    "operator": "使用者",
     "eject": "登出"
   },
   "map": {
@@ -36,21 +36,26 @@
     "salvaging": "採集中…"
   },
   "workbench": {
-    "title": "微型工作檯 // 奈米機",
+    "title": "升級中心 // 助手",
     "upgrade": "升級",
-    "loading": "載入機甲中…",
-    "welder_spider": "銲槍蜘蛛",
-    "welder_spider_blurb": "加速解鎖→救援循環",
-    "suction_jelly": "抽吸水母",
-    "suction_jelly_blurb": "無損回收生化毒素",
-    "crawler": "重壓履帶車",
-    "crawler_blurb": "批量救援加成"
+    "loading": "載入資料中…",
+    "welder_spider": "加速小幫手",
+    "welder_spider_blurb": "縮短系統處理與驗證時間",
+    "suction_jelly": "保鮮小幫手",
+    "suction_jelly_blurb": "能夠無損回收嚴重過期的物資",
+    "crawler": "搬運小幫手",
+    "crawler_blurb": "增加單次救援數量的經驗加成"
   },
   "bounty": {
     "title": "今日任務",
     "claim": "領取",
     "claimed": "已領取 ✓",
-    "empty": "尚無任務發佈。"
+    "empty": "尚無任務發佈。",
+    "tasks": {
+      "daily_rescue": "今日完成 3 次物資救援",
+      "spoiled_hero": "成功無損回收 1 份高熵生化毒素",
+      "warning_clear": "從高熵警報節點中搶救 2 份物資"
+    }
   },
   "feed": {
     "title": "訊號流",
@@ -72,33 +77,33 @@
   "lang": { "toggle": "EN" },
   "dropoff": { "button": "投放補貨" },
   "manual": {
-    "button": "系統日誌: 終端操作指南",
-    "title": "[ GLITCH SALVAGE ] 新手指揮官特務救援指南",
-    "classification": "CLASSIFIED DOCUMENT // LEVEL 1 ACCESS ONLY",
-    "intro_title": ">>> 系統初始化...",
-    "intro_desc": "歡迎來到 GLITCH SALVAGE 網路。這是一個透過分散式感測器監控城市食物浪費的去中心化網路。身為指揮官，您的目標是透過即時資料流，找出處於「高熵值 (High Entropy / 腐敗邊緣)」的食物資源，並指揮實體部隊前往救援。",
-    "step1_title": "01 // 核心玩法：Map Surveillance (地圖監控)",
-    "step1_desc1": "透過終端機中央的 Dark Matter Map，您能實時監控所有智慧節點 (Nodes)。",
-    "step1_li1": "綠色節點 (穩定狀態)：目前機台運作正常，食物熵值極低。",
-    "step1_li2": "琥珀色閃爍 (高熵警報)：機台內有食物即將過期或損壞。點擊節點可開啟 Context 資訊面板，查看現場超音波感測器回傳的真實容量數據與機台照片。",
-    "step1_hint": ">> 新手提示：優先處理高熵值的節點，以獲得額外的 XP 經驗值獎勵！",
-    "step2_title": "02 // 硬體交握：Hardware Handshake",
-    "step2_desc1": "找到目標後，請在右側 Context 面板點擊 [RESERVE] (線上預約)。",
-    "step2_li1": "數位派發 (Digital Dispatch)：預約成功後，系統將透過加密的 Tailscale 隧道，將您的 RFID 授權碼發送至該實體節點 (Raspberry Pi)。",
-    "step2_li2": "物理驗證 (Physical Verification)：您必須帶著實體 RFID 卡片前往機台。當卡片貼近感測器時，機台將在毫秒內進行比對。",
-    "step2_li3": "解鎖與數據回傳：若卡片 UID 相符，機櫃門將開啟。當超音波感測器偵測到物資被取走，機台會自動關門，並回傳 resource_credited 訊號至您的終端機，完成救援任務。",
-    "step3_title": "03 // 奈米機升級系統 (Nanos Upgrade)",
-    "step3_desc1": "每次成功的救援都會根據食物種類為您提煉出三種生化資源：蛋白質 (PROTEIN)、碳水 (CARBS) 與脂質 (LIPIDS)。",
-    "step3_desc2": "您可以使用這些資源來培養並升級終端機右下角的「Nanos (皮可敏型奈米機)」。不同型態的 Nanos 各有專長：",
-    "nano_crab_title": "CRAB 蟹型機",
-    "nano_crab_food": "主食：碳水 (CARBS)",
-    "nano_crab_desc": "特化於【負重與搬運】。升級後可增加您同時預約的最大數量上限。",
-    "nano_spider_title": "SPIDER 蛛型機",
-    "nano_spider_food": "主食：蛋白質 (PROTEIN)",
-    "nano_spider_desc": "特化於【網路攔截】。升級後可縮短硬體交握的延遲時間，並解鎖進階感測器數據。",
-    "nano_jelly_title": "JELLY 膠體型",
-    "nano_jelly_food": "主食：脂質 (LIPIDS)",
-    "nano_jelly_desc": "特化於【熵值吸收】。升級後在救援高熵食物時，可獲得額外最高 50% 的 XP 加成。",
-    "start_btn": "[ 接受任務指令 / INITIALIZE ]"
+    "button": "遊戲指南",
+    "title": "遊戲指南:[ GLITCH SALVAGE ] 新手指揮官特務救援指南",
+    "classification": "核心概念與操作說明 (1 分鐘快速了解)",
+    "intro_title": "🚀 什麼是 Food Rescue 網路？",
+    "intro_desc": "這是一個結合軟硬體的「剩食救援網路」。我們透過 IoT 感測器監控實體機台，讓您化身特務，在食物過期前將其拯救！",
+    "step1_title": "📍 01 // 尋找即期物資 (IoT 地圖監控)",
+    "step1_desc1": "透過首頁地圖，實時監控各地的智慧機台狀態：",
+    "step1_li1": "🟢 綠色節點：食物新鮮度良好，狀態穩定。",
+    "step1_li2": "🟡 閃爍節點 (即期警報)：食物即將過期！點擊查看現場感測器的真實容量與照片。",
+    "step1_hint": ">> 提示：優先救援「即期」食物，可獲得極高的經驗值獎勵！",
+    "step2_title": "📲 02 // 虛實整合 (預約與實體取餐)",
+    "step2_desc1": "只需三個步驟即可完成救援：",
+    "step2_li1": "1. 線上預約：點擊 [線上預約]，系統會將權限寫入您的實體 RFID 卡片。",
+    "step2_li2": "2. 實體感應：帶著卡片前往機台感應，系統驗證後將自動開門。",
+    "step2_li3": "3. 智慧結算：取出食物後，內部感測器偵測到物資減少，機台會自動關門並結算任務獎勵！",
+    "step3_title": "✨ 03 // 遊戲化升級 (專屬小幫手)",
+    "step3_desc1": "救援成功後，系統會分析食物營養，轉化為：蛋白質、碳水與脂質。",
+    "step3_desc2": "使用這些資源升級您的「專屬小幫手」，獲得更強大的救援能力：",
+    "nano_crab_title": "📦 搬運小幫手",
+    "nano_crab_food": "升級需求：碳水",
+    "nano_crab_desc": "提升負重能力，增加可同時預約的訂單數量。",
+    "nano_spider_title": "⚡ 加速小幫手",
+    "nano_spider_food": "升級需求：蛋白質",
+    "nano_spider_desc": "優化系統效能，大幅縮短實體機台的感應時間。",
+    "nano_jelly_title": "🛡️ 保鮮小幫手",
+    "nano_jelly_food": "升級需求：脂質",
+    "nano_jelly_desc": "強化處理能力，救援即期食物時獲得巨幅經驗加成。",
+    "start_btn": "[ 立即開始任務 ]"
   }
 }

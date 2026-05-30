@@ -23,7 +23,7 @@
    - **通訊橋接 (The Bridge)**：內建 MQTT 訂閱邊緣端狀態，並透過 WebSocket 即時廣播給前端 App。
 
 3. **應用前端 (Client UI) - 遊戲 App 與戰情室**
-   - **UI 1 (玩家 App)**：Cyber-Grid 賽博龐克風格，提供雷射雷達掃描 (Lidar Ping)、微型工作檯升級與即時脈衝動畫。
+   - **UI 1 (玩家 App)**：全新升級的 3 欄式 Cyber-Grid 賽博龐克風格介面。支援完整的 i18n 雙語（中/英）無縫切換，並具備 Canvas 即時渲染的皮可敏 (Nanos) 收集動畫、硬體級 Context 數據面板、雷射雷達掃描 (Lidar Ping)、微型工作檯升級與即時脈衝動畫。
    - **UI 2 (ESG Dashboard)**：指揮中心視角，展示即時減碳量、網路拓樸與車隊預測模型準確度。
 
 ## ✨ 核心亮點功能
@@ -119,8 +119,7 @@ npm run typecheck
 
 ## Frontend — UI1 player game (`web/apps/game`)
 
-Cyberpunk React app: entropy-driven map glitch, Lidar ping, Nanos workbench,
-unlock/credit animations, auto-reconnecting WebSocket. Dev server proxies
+Cyberpunk React app (recently overhauled to a 3-column native-scrolling grid): entropy-driven map glitch, Lidar ping, Nanos workbench, full i18n support (English/Traditional Chinese), a dedicated Canvas-based Nanos gathering simulation, unlock/credit animations, and auto-reconnecting WebSocket. Dev server proxies
 `/api` + `/ws` to the backend on `:8000`.
 
 ```powershell
@@ -198,7 +197,7 @@ contract; the backend needs no changes.
 - **M2** ✅ MQTT bridge + WS manager + deconstruct + `sim_edge.py` (full flow verified).
 - **M3** ✅ decay engine + entropy snapshots + daily bounties + fleet-learning purity prompts on APScheduler.
 - **M4** ✅ full REST API (auth, account, nodes, inventory, nanos upgrade, bounties, feedback, ESG/stats) + integration tests.
-- **M5** ✅ UI1 game frontend — map glitch, Lidar ping, Nanos workbench, unlock/credit animations, auto-reconnect WS.
+- **M5** ✅ UI1 game frontend — map glitch, Lidar ping, Nanos workbench, unlock/credit animations, auto-reconnect WS. (Overhauled: 3-column layout, canvas-based simulation, full i18n, ultra-detailed Game Manual).
 - **M6** ✅ UI2 ESG dashboard (recharts war room) + 30-day mock data generator.
 - **M7** ✅ nginx serves both built frontends + WS upgrade, healthchecks, full lint/typecheck/test green.
 
