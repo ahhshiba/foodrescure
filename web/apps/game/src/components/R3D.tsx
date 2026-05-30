@@ -31,8 +31,8 @@ function FallbackMesh({ isPlaying }: { isPlaying: boolean }) {
 }
 
 // Attempts to load the GLTF model
-function Model({ isPlaying }: { isPlaying: boolean }) {
-  const { scene } = useGLTF('/robot.glb');
+function Model({ isPlaying, modelUrl }: { isPlaying: boolean, modelUrl: string }) {
+  const { scene } = useGLTF(modelUrl);
   const groupRef = useRef<THREE.Group>(null);
   
   useFrame((state) => {
@@ -52,7 +52,7 @@ function Model({ isPlaying }: { isPlaying: boolean }) {
   return <primitive object={scene} ref={groupRef} />;
 }
 
-export function R3D({ isPlaying }: { isPlaying: boolean }) {
+export function R3D({ isPlaying, modelUrl }: { isPlaying: boolean, modelUrl: string }) {
   return (
     <div className="w-full h-full relative cursor-grab active:cursor-grabbing">
       <Canvas camera={{ position: [0, 1, 5], fov: 50 }}>
@@ -60,7 +60,7 @@ export function R3D({ isPlaying }: { isPlaying: boolean }) {
         <directionalLight position={[10, 10, 5]} intensity={1} />
         
         <React.Suspense fallback={<FallbackMesh isPlaying={isPlaying} />}>
-          <Model isPlaying={isPlaying} />
+          <Model isPlaying={isPlaying} modelUrl={modelUrl} />
         </React.Suspense>
         
         <OrbitControls enableZoom={false} enablePan={false} />

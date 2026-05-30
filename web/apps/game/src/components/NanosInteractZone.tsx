@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useInventory, useUpgradeNanos } from '../api/hooks';
 import { useTalkingTom } from '../hooks/useTalkingTom';
 import { R3D } from './R3D';
@@ -30,6 +30,7 @@ export function NanosInteractZone() {
   const upgrade = useUpgradeNanos();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { isRecording, isPlaying, startRecording, stopRecording } = useTalkingTom();
+  const [selectedModel, setSelectedModel] = useState('/robot.glb');
 
   const nanosStats = inv.data?.nanos ?? [];
   const displayNanos = nanosStats.length > 0 ? nanosStats : [
@@ -241,7 +242,7 @@ export function NanosInteractZone() {
             className="absolute inset-0 w-full h-full block opacity-40"
           />
           <div className="absolute inset-0 w-full h-full z-10 pointer-events-auto">
-             <R3D isPlaying={isPlaying} />
+             <R3D isPlaying={isPlaying} modelUrl={selectedModel} />
           </div>
           <div className="absolute bottom-4 left-0 right-0 flex justify-center z-20 pointer-events-auto">
             <button
@@ -258,29 +259,46 @@ export function NanosInteractZone() {
 
         {/* Nano Status Panels Overlay */}
         <div className="h-auto max-h-[140px] bg-white p-3 flex flex-col gap-2 overflow-y-auto custom-scrollbar shrink-0 z-20">
-          {displayNanos.map((n) => (
-            <div key={n.nanos_type} className="flex items-center justify-between border border-zen-border rounded-lg bg-[#fcfaf8] p-2 hover:bg-[#f8f6f2] transition-colors">
-              <div className="flex flex-col">
-                <div className="flex items-center gap-2">
-                  <div className={`w-2 h-2 rounded-full ${
-                    n.nanos_type === 'crab' ? 'bg-[#d9a05b]' :
-                    n.nanos_type === 'spider' ? 'bg-[#7fb069]' :
-                    'bg-[#e68a8a]'
-                  }`}></div>
-                  <span className="text-xs font-bold text-zen-text capitalize">{n.nanos_type}</span>
-                </div>
-                <span className="text-[9px] text-zen-light mt-1 ml-4">Lv: {n.level} | Efficacy: {Math.floor(100 + n.level * 15)}%</span>
-              </div>
+          {displayNanos.map((n) => {
+            const isSelected = 
+              (n.nanos_type === 'crab' && selectedModel === '/robot.glb') ||
+              (n.nanos_type === 'spider' && selectedModel === '/flamingo.glb') ||
+              (n.nanos_type === 'jellyfish' && selectedModel === '/parrot.glb');
               
-              <button
-                onClick={() => upgrade.mutate(n.nanos_type)}
-                disabled={upgrade.isPending}
-                className="px-3 py-1.5 text-xs font-bold text-zen-primary bg-[#f4f6f4] border border-[#e1e7e3] rounded-md hover:bg-[#ebf0ec] transition-colors"
+            return (
+              <div 
+                key={n.nanos_type} 
+                className={`flex items-center justify-between border rounded-lg p-2 transition-colors cursor-pointer ${
+                  isSelected ? 'border-zen-primary bg-[#f4f8f4]' : 'border-zen-border bg-[#fcfaf8] hover:bg-[#f8f6f2]'
+                }`}
+                onClick={() => {
+                  if (n.nanos_type === 'crab') setSelectedModel('/robot.glb');
+                  if (n.nanos_type === 'spider') setSelectedModel('/flamingo.glb');
+                  if (n.nanos_type === 'jellyfish') setSelectedModel('/parrot.glb');
+                }}
               >
-                {upgrade.isPending ? '...' : 'Upgrade'}
-              </button>
-            </div>
-          ))}
+                <div className="flex flex-col pointer-events-none">
+                  <div className="flex items-center gap-2">
+                    <div className={`w-2 h-2 rounded-full ${
+                      n.nanos_type === 'crab' ? 'bg-[#d9a05b]' :
+                      n.nanos_type === 'spider' ? 'bg-[#7fb069]' :
+                      'bg-[#e68a8a]'
+                    }`}></div>
+                    <span className="text-xs font-bold text-zen-text capitalize">{n.nanos_type}</span>
+                  </div>
+                  <span className="text-[9px] text-zen-light mt-1 ml-4">Lv: {n.level} | Efficacy: {Math.floor(100 + n.level * 15)}%</span>
+                </div>
+                
+                <button
+                  onClick={(e) => { e.stopPropagation(); upgrade.mutate(n.nanos_type); }}
+                  disabled={upgrade.isPending}
+                  className="px-3 py-1.5 text-xs font-bold text-zen-primary bg-[#f4f6f4] border border-[#e1e7e3] rounded-md hover:bg-[#ebf0ec] transition-colors"
+                >
+                  {upgrade.isPending ? '...' : 'Upgrade'}
+                </button>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
